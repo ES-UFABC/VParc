@@ -1,4 +1,4 @@
-# Grupo Veteranos Parceiros - Troca de livros e Informação sobre materiais
+# VParc - Troca de livros e Informação sobre materiais
 
 1. Gustavo de Olival Albernaz Guerra 
 1. Bianca Hidemi Kanehira
