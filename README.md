@@ -22,5 +22,5 @@ O projeto consiste em elaborar um sistema, em que tenta aproximar dois tipos de 
     * Back-end: Node.JS;
     * Front-end: React Native;
     * Banco de dados: Firebase.
-- Plataforma em que a solução se acessível: 
+- Plataforma em que a solução é acessível: 
     * Mobile.
