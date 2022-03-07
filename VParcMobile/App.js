@@ -8,7 +8,7 @@ const App = () => {
   
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Open up Web to start working on your app!</Text>
       <TextInput 
         style={styles.backgroundInput} 
         onChangeText={text => setNome(text)}
