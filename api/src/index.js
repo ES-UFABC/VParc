@@ -3,7 +3,11 @@ const express = require("express");
 const app = express();
 const router = require("./routes/routes");
 
+const connectToMongoDB = require("./database/config");
+
 app.use(express.json());
+
+connectToMongoDB();
 
 app.use("/api", router);
 
