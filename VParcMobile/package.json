@@ -20,5 +20,8 @@
   "devDependencies": {
     "@babel/core": "^7.12.9"
   },
+  "assets":[
+    "fonts"
+  ],
   "private": true
 }
