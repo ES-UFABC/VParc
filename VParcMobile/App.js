@@ -1,23 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
+
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import FirstComponent from './components/firstComponent';
+import { StyleSheet,  View } from 'react-native';
+import LoginComponent from './components/land-page/loginComponent';
 
 const App = () => {
   const [nome,setNome] = useState("João");
   
   return (
     <View style={styles.container}>
-      <Text>Open up iOS to start working on your app!</Text>
-      <TextInput 
-        style={styles.backgroundInput} 
-        onChangeText={text => setNome(text)}
-        autoComplete="off"  
-      />
-      <FirstComponent/>
-      <Text>{nome}</Text>
-      <StatusBar style="auto" />
       
+      <LoginComponent/>
     </View>
   );
 }
