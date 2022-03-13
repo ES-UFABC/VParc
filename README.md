@@ -24,3 +24,30 @@ O projeto consiste em elaborar um sistema, em que tenta aproximar dois tipos de 
     * Banco de dados: Firebase.
 - Plataforma em que a solução é acessível: 
     * Mobile.
+
+## Configuração do Projeto
+
+### Front-end
+
+Pré-requisitos: 
+- Instalado na máquina o NodeJS (estamos utilizando versão 16.14)
+
+Para realizar a instalação e configuração inicial do projeto, deve-se em primeira instância executar o git clone no projeto, em seguida seguir o passo a passo:
+
+- Instalar o expo-cli:
+
+        npm install -g expo-cli
+    
+- Dentro da pasta do projeto mobile (VParcMobile), instalar as dependências do projeto:
+
+        npm install
+
+- Em seguida executar o projeto:
+
+        npm start
+
+Após a aplicação ter iniciado, irão aparecer diversas opções no expo no terminal, sendo possível abrir executar o aplicativo em:
+- Web; 
+- Emulador de android;
+- Celular esteja conectado ao computador;
+- Utilizando o aplicativo ExpoGo e sincronizando com o QR code gerado e mostrado no terminal.
