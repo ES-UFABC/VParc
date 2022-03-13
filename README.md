@@ -11,7 +11,7 @@
 ## Apresentação
 
 O projeto consiste em elaborar um sistema, em que tenta aproximar dois tipos de pessoas:
- -  A que possui qualquer tipo de livro parado em casa e tem vontade de vender ou doa-lo, com o enfoque de livros universitários;
+ - A que possui qualquer tipo de livro parado em casa e tem vontade de vender ou doá-lo, com o enfoque de livros universitários;
  - A que tem a intenção de adquirir um livro/material mas não quer gastar muito ou não pode comprar, sendo aquele estudante buscando formas de estudar e se dedicar a matéria;
  - Uma biblioteca de livros, com avaliações de alunos que o utilizaram no passsado, bem como uma função de filtrar os livros pelas matérias que são utilizados.
 
@@ -32,7 +32,7 @@ O projeto consiste em elaborar um sistema, em que tenta aproximar dois tipos de 
 Pré-requisitos: 
 - Instalado na máquina o NodeJS (estamos utilizando versão 16.14)
 
-Para realizar a instalação e configuração inicial do projeto, deve-se em primeira instância executar o git clone no projeto, em seguida seguir o passo a passo:
+Para realizar a instalação e configuração inicial do projeto, deve-se em primeira instância executar o git clone do projeto e seguir o passo a passo:
 
 - Instalar o expo-cli:
 
@@ -46,8 +46,8 @@ Para realizar a instalação e configuração inicial do projeto, deve-se em pri
 
         npm start
 
-Após a aplicação ter iniciado, irão aparecer diversas opções no expo no terminal, sendo possível abrir executar o aplicativo em:
+Após a aplicação ter iniciado, irão aparecer diversas opções do expo no terminal, sendo possível executar o aplicativo em:
 - Web; 
 - Emulador de android;
 - Celular esteja conectado ao computador;
-- Utilizando o aplicativo ExpoGo e sincronizando com o QR code gerado e mostrado no terminal.
+- Utilizando o aplicativo ExpoGo (baixado via PlayStore ou AppStore), sincronizando o QR code gerado e mostrado no terminal.
