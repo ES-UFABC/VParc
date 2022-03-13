@@ -21,7 +21,7 @@ O projeto consiste em elaborar um sistema, em que tenta aproximar dois tipos de 
 - Tecnologias que serão utilizadas:
     * Back-end: Node.JS;
     * Front-end: React Native;
-    * Banco de dados: Firebase.
+    * Banco de dados: MongoDB.
 - Plataforma em que a solução é acessível: 
     * Mobile.
 
