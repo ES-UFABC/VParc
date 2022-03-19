@@ -1,8 +1,12 @@
 
 import { useState } from 'react';
 import { StyleSheet,  View } from 'react-native';
-import LoginComponent from './components/land-page/loginComponent';
+import LoginComponent from './components/login-page/loginComponent';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import LandPageComponent from './components/land-page/landPageComponent';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export const theme={
   ...DefaultTheme,
@@ -14,17 +18,21 @@ export const theme={
   }
 }
 
-
+const Stack = createNativeStackNavigator();
 
 
 const App = () => {
-  const [nome,setNome] = useState("João");
   
   return (
     <PaperProvider >
-      <View style={styles.container}>
-        <LoginComponent/>
-      </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="LandPage">
+        
+            <Stack.Screen name="LandPage" component={LandPageComponent} />
+            <Stack.Screen name="Login" component={LoginComponent} />
+        
+      </Stack.Navigator>
+    </NavigationContainer>
     </PaperProvider>
   );
 }
