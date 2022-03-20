@@ -1,7 +1,7 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { TextInput, Button } from "react-native-paper";
+import { TextInput, Button,ActivityIndicator } from "react-native-paper";
 import { withTheme } from "react-native-paper";
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { 
@@ -23,64 +23,87 @@ import {
 import { useFonts } from "@expo-google-fonts/nunito";
 import styles from '../../styles/styleLoginPage';
 import colors from "../../styles/colors";
+import InputFieldLogin from './inputFieldLogin';
+import UserService from "../../services/userService";
 
-
-const InputFieldLogin = (props) =>{
-  return (
-    <TextInput 
-      {...props}
-      outlineColor={colors.tertiary}
-      activeOutlineColor='#ffffff'
-      mode='flat'
-      style={styles.inputText}
-      underlineColor={colors.tertiary}  
-      activeUnderlineColor={colors.tertiary} 
-      left={<TextInput.Icon name='signature'/>}
-    />
-);
-}
 
 
 const LoginComponent = ({navigation}) =>{
+    
+    const [isLogin,setLogin] = useState(false);
+    const [email,setEmail] = useState('');
+    const [senha,setSenha] = useState('');
+
+    const updateEmail = (email) =>{
+      setEmail(email);
+    }
+
+    const updateSenha = (senha) =>{
+      setSenha(senha);
+    }
+
+    const login = () =>{
+      setLogin(true);
+      console.log(email + ' ' + senha);
+      setTimeout(()=>setLogin(false),4000);
+      
+    }
+
+
+
     let [fontsloaded] = useFonts({
       Nunito_200ExtraLight,
       Nunito_200ExtraLight_Italic,
       Nunito_300Light,
       Nunito_800ExtraBold
-    })
+    });
+
+
     return(
         <View style={styles.container}>
             <StatusBar style="auto"/>
+            {!isLogin ? (
+              <View style={{width:'100%', alignItems:'center'}}>
             <Text style={
                 styles.titulo
                 }>VParc
             </Text>
+            
                 <View style={styles.inputView}> 
                     <InputFieldLogin
-                      keyboardType="numeric"
-                      placeholder="RA"
+                      value={email}
+                      placeholder="Email"
+                      onChangeText={(email)=>updateEmail(email)}
                     />
                 </View>  
               
                 <View style={styles.inputView}> 
                     <InputFieldLogin
+                      value={senha}
                       placeholder='Senha'
+                      onChangeText={(senha)=>updateSenha(senha)}
                     />
                 </View>  
-
-            <TouchableOpacity style={styles.loginBtn}>
-                <Text style={{color:'white', fontWeight:'bold', fontSize:17, fontFamily:'Nunito_800ExtraBold'}}>LOGIN</Text>
-            </TouchableOpacity>
+                
+                  <TouchableOpacity style={styles.loginBtn} onPress={()=>login()}>
+                      <Text style={styles.loginTxt} >LOGIN</Text>
+                  </TouchableOpacity>
+                  
+                  <Button
+                    mode='contained'
+                    style={styles.forgot_btn}
+                    color='white'
+                    onPress={()=>{}}
+                  >
+                    <Text style={styles.forgot_txt}>Esqueci a senha</Text>
+                  </Button>
+              </View>
+             ): 
+             (
+              <ActivityIndicator size='large' animating={true} color={colors.branco} />
+             )
+            }
             
-              <Button
-                mode='contained'
-                style={styles.forgot_btn}
-                color='white'
-                onPress={()=>console.log("ap")}
-              >
-                <Text style={styles.forgot_txt}>Esqueci a senha</Text>
-              </Button>
-
         </View>
     );
 }
