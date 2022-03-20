@@ -4,7 +4,12 @@ import colors from './colors';
 
 
 const styles = StyleSheet.create({
-
+    loginTxt:{
+      color:'white', 
+      fontWeight:'bold', 
+      fontSize:17, 
+      fontFamily:'Nunito_800ExtraBold'
+    },
     titulo:{
       marginBottom:100,
       color:'white',
