@@ -21,12 +21,9 @@ import {
   Nunito_900Black_Italic 
 } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
+import styles from '../../styles/styleLoginPage';
+import colors from "../../styles/colors";
 
-const colors = {
-  primary:"#657fac", //logo
-    secundary:'#8da4cd', //fundo
-    tertiary:"#839bc4", //input
-}
 
 const InputFieldLogin = (props) =>{
   return (
@@ -44,7 +41,7 @@ const InputFieldLogin = (props) =>{
 }
 
 
-const LoginComponent = () =>{
+const LoginComponent = ({navigation}) =>{
     let [fontsloaded] = useFonts({
       Nunito_200ExtraLight,
       Nunito_200ExtraLight_Italic,
@@ -86,67 +83,7 @@ const LoginComponent = () =>{
 
         </View>
     );
-
-    
 }
 
 export default LoginComponent;
 
-
-const styles = StyleSheet.create({
-
-    titulo:{
-      marginBottom:100,
-      color:'white',
-      fontWeight:'bold',
-      fontSize:30,
-      fontFamily:'Nunito_800ExtraBold'
-    },
-    container: {
-      flex:1,
-      backgroundColor: colors.secundary,
-      alignItems: "center",
-      justifyContent: "center",
-      alignSelf:'stretch',
-      flexDirection:'column'
-    },
-    inputView: {
-      backgroundColor: colors.tertiary,
-      borderRadius: 30,
-      height: 50,
-      marginBottom: 20,
-      width: "80%",
-      alignItems: "center",
-      borderWidth:2,
-      borderColor:'white'
-    },
-    inputText: {
-      height: 45,
-      colo:'black',
-      textAlign:"center",
-      paddingRight:20,
-      placeholderTextColor:'white',
-      backgroundColor:colors.tertiary,
-      width:'90%',
-      borderColor:colors.tertiary,
-      placeholderTextColor:'white',
-      fontFamily:'Nunito_800ExtraBold',
-    },
-    forgot_btn:{
-      marginTop:20,
-    },
-    forgot_txt:{
-      fontWeight:'bold', 
-      fontSize:12, 
-      fontFamily:'Nunito_800ExtraBold'
-    },
-    loginBtn: {
-      width: "80%",
-      borderRadius: 25,
-      height: 50,
-      alignItems: "center",
-      marginTop: 40,
-      backgroundColor: colors.primary,
-      justifyContent:'center'
-    },
-  });
