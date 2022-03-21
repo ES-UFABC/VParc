@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { TextInput, Button,ActivityIndicator } from "react-native-paper";
@@ -23,6 +23,7 @@ import styles from '../../styles/styleLoginPage';
 import colors from "../../styles/colors";
 import InputFieldLogin from '../../components/inputFieldLogin';
 import UserService from "../../services/userService";
+import logo from '../../assets/images/logoBranco.png';
 
 const LoginComponent = ({navigation}) =>{
     
@@ -41,7 +42,7 @@ const LoginComponent = ({navigation}) =>{
     const login = () =>{
       setLogin(true);
       console.log(email + ' ' + senha);
-      setTimeout(()=>setLogin(false),4000); 
+      setTimeout(()=> navigation.push('ListPage'),1000); 
     }
 
     let [fontsloaded] = useFonts({
@@ -55,28 +56,29 @@ const LoginComponent = ({navigation}) =>{
         <View style={styles.container}>
             <StatusBar style="auto"/>
             {!isLogin ? (
-              <View style={{width:'100%', alignItems:'center'}}>
-            <Text style={
-                styles.titulo
-                }>VParc
-            </Text>
-            
-                <View style={styles.inputView}> 
-                    <InputFieldLogin
-                      value={email}
-                      placeholder="Email"
-                      onChangeText={(email)=>updateEmail(email)}
-                    />
-                </View>  
-              
-                <View style={styles.inputView}> 
-                    <InputFieldLogin
-                      value={senha}
-                      placeholder='Senha'
-                      onChangeText={(senha)=>updateSenha(senha)}
-                    />
-                </View>  
+              <View style={{width:'100%', height:'80%',alignItems:'center'}}>
                 
+                <View styles={{alignItems:'center'}}>
+                  <Text style={styles.titulo}>VParc</Text>
+                  <Image source={logo} style={{width:180, height:180}}/>
+                </View>
+                <View style={{marginTop:'10%', width:'100%', alignItems:'center'}}>
+                  <View style={styles.inputView}> 
+                      <InputFieldLogin
+                        value={email}
+                        placeholder="Email"
+                        onChangeText={(email)=>updateEmail(email)}
+                      />
+                  </View>  
+                
+                  <View style={styles.inputView}> 
+                      <InputFieldLogin
+                        value={senha}
+                        placeholder='Senha'
+                        onChangeText={(senha)=>updateSenha(senha)}
+                      />
+                  </View>  
+                </View>
                   <TouchableOpacity style={styles.loginBtn} onPress={()=>login()}>
                       <Text style={styles.loginTxt} >LOGIN</Text>
                   </TouchableOpacity>

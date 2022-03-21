@@ -5,7 +5,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import LandPageComponent from './features/land-page/landPageComponent';
 import LoginComponent from './features/login-page/loginComponent';
 import UserRegistrationComponent from './features/user-registration-page/userRegistrationPageComponent';
-
+import ListPageComponent from './features/list-page/listPageComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -32,6 +32,7 @@ const App = () => {
             <Stack.Screen name="LandPage" component={LandPageComponent} />
             <Stack.Screen name="Login" component={LoginComponent} />
             <Stack.Screen name="UserRegistration" component={UserRegistrationComponent} />
+            <Stack.Screen name="ListPage" component={ListPageComponent} options={{headerShown:null}}/>
         
       </Stack.Navigator>
     </NavigationContainer>
