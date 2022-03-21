@@ -48,11 +48,11 @@ class UserRepository {
 
         try {
 
-            const { id, first_name, last_name, email, ra, cellphone, hash } = user;
+            const { id, first_name, last_name, email, ra, cellphone, hash, active } = user;
             
             await User.updateOne(
                 { _id: id }, 
-                { first_name, last_name, email, ra, cellphone, hash }
+                { first_name, last_name, email, ra, cellphone, hash, active }
             );
 
             return {
