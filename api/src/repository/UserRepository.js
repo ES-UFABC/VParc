@@ -34,7 +34,36 @@ class UserRepository {
 
             return {
                 status: false,
-                message: "Oorreu um erro!"
+                message: "Ocorreu um erro!",
+                error: err
+            };
+
+        }
+
+    }
+
+    async findAll() {
+
+        try {
+
+            const result = await User.find().lean();
+
+            return {
+                status: true,
+                data: {
+                    length: result.length,
+                    result
+                }
+            }
+
+        } catch (err) {
+
+            console.log(err);
+
+            return {
+                status: false,
+                message: "Ocorreu um erro!",
+                error: err
             };
 
         }
