@@ -27,6 +27,11 @@ const User = new Schema({
     hash: {
         type: String,
         required: true
+    },
+    active: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 });
 
