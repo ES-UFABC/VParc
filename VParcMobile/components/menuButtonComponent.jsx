@@ -1,5 +1,4 @@
-
-import styles from "../../styles/styleLandPage";
+import styles from "../styles/styleLandPage";
 import { TouchableOpacity,Text } from "react-native";
 
 const MenuButtonComponent = (props) =>{

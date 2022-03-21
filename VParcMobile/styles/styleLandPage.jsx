@@ -3,7 +3,7 @@ import colors from './colors';
 
 const styles = StyleSheet.create({
     textButton:{
-      color:colors.branco,
+      color:colors.white,
       fontFamily:'Nunito_800ExtraBold',
       fontSize:20,
     },
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex:1,
-        backgroundColor: colors.branco,
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "center",
         alignSelf:'stretch',

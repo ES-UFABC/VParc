@@ -1,6 +1,6 @@
 import { TextInput} from "react-native-paper";
-import styles from "../../styles/styleLoginPage";
-import colors from "../../styles/colors";
+import styles from "../styles/styleLoginPage";
+import colors from "../styles/colors";
 
 const InputFieldLogin = (props) =>{
     return (

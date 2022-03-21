@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
       height: 45,
-      colo:'black',
+      color:'black',
       textAlign:"center",
       paddingRight:20,
       placeholderTextColor:'white',

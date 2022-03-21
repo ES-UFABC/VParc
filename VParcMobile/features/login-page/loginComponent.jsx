@@ -2,8 +2,6 @@ import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { TextInput, Button,ActivityIndicator } from "react-native-paper";
-import { withTheme } from "react-native-paper";
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { 
   Nunito_200ExtraLight,
   Nunito_200ExtraLight_Italic,
@@ -23,10 +21,8 @@ import {
 import { useFonts } from "@expo-google-fonts/nunito";
 import styles from '../../styles/styleLoginPage';
 import colors from "../../styles/colors";
-import InputFieldLogin from './inputFieldLogin';
+import InputFieldLogin from '../../components/inputFieldLogin';
 import UserService from "../../services/userService";
-
-
 
 const LoginComponent = ({navigation}) =>{
     
@@ -45,11 +41,8 @@ const LoginComponent = ({navigation}) =>{
     const login = () =>{
       setLogin(true);
       console.log(email + ' ' + senha);
-      setTimeout(()=>setLogin(false),4000);
-      
+      setTimeout(()=>setLogin(false),4000); 
     }
-
-
 
     let [fontsloaded] = useFonts({
       Nunito_200ExtraLight,
@@ -57,7 +50,6 @@ const LoginComponent = ({navigation}) =>{
       Nunito_300Light,
       Nunito_800ExtraBold
     });
-
 
     return(
         <View style={styles.container}>
@@ -100,7 +92,7 @@ const LoginComponent = ({navigation}) =>{
               </View>
              ): 
              (
-              <ActivityIndicator size='large' animating={true} color={colors.branco} />
+              <ActivityIndicator size='large' animating={true} color={colors.white} />
              )
             }
             
