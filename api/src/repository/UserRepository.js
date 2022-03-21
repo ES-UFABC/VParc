@@ -4,6 +4,13 @@ const NAMES = require("../database/names");
 require("../model/User");
 const User = mongoose.model(NAMES.USERS);
 
+function newErrorMessage(message, error) {
+    return {
+        status: false,
+        message,
+        error
+    }
+}
 class UserRepository {
 
     async create(user) {
@@ -31,12 +38,7 @@ class UserRepository {
         } catch (err) {
 
             console.log(err);
-
-            return {
-                status: false,
-                message: "Ocorreu um erro!",
-                error: err
-            };
+            return newErrorMessage("ERROR", err);
 
         }
 
@@ -59,13 +61,107 @@ class UserRepository {
         } catch (err) {
 
             console.log(err);
+            return newErrorMessage("ERROR", err);
 
-            return {
-                status: false,
-                message: "Ocorreu um erro!",
-                error: err
-            };
+        }
 
+    }
+
+    async findByEmail(email) {
+
+        try {
+
+            const result = await User.find().where({
+                email: email
+            }).lean();
+
+            if (result.length > 0) {
+
+                return {
+                    status: true,
+                    data: {
+                        length: result.length,
+                        result
+                    }
+                }
+
+            } else {
+
+                return newErrorMessage("NOT FOUND")
+
+            }
+            
+        } catch (err) {
+
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+            
+        }
+
+    }
+
+    async findByRA(ra) {
+
+        try {
+
+            const result = await User.find().where({
+                ra: ra
+            }).lean();
+
+            if (result.length > 0) {
+
+                return {
+                    status: true,
+                    data: {
+                        length: result.length,
+                        result
+                    }
+                }
+
+            } else {
+
+                return newErrorMessage("NOT FOUND")
+
+            }
+            
+        } catch (err) {
+
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+            
+        }
+
+    }
+
+    async findById(id) {
+
+        try {
+
+            const result = await User.find().where({
+                _id: id
+            }).lean();
+
+            if (result.length > 0) {
+
+                return {
+                    status: true,
+                    data: {
+                        length: result.length,
+                        result
+                    }
+                }
+
+            } else {
+
+                return newErrorMessage("NOT FOUND")
+
+            }
+            
+        } catch (err) {
+
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+            
         }
 
     }
