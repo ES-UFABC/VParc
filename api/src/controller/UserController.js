@@ -15,7 +15,7 @@ class UserController {
 
         if (errors.length > 0) {
 
-            res.status(400);
+            res.status(400); // bad request
             res.json({
                 status: false,
                 message: "Dados inválidos!",
@@ -65,6 +65,65 @@ class UserController {
 
     }
 
+    async login(req, res) {
+
+        const data = req.body; // retrieve data from the body's request
+
+        // validate the data
+        const errors = await validateLogin(data);
+
+        if (errors.length > 0) {
+
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Dados inválidos!",
+                data: {
+                    length: errors.length,
+                    errors
+                }
+            });
+            return;
+
+        }
+
+        // check if the user exists
+        const response = await UserRepository.findByEmail(data.email);
+
+        if (response.status == false) {
+
+            res.status(404); // not found
+            res.json({
+                status: false,
+                message: "Usuário não existe no sistema."
+            });
+            return;
+
+        }
+
+        // check email + password
+        const user = response.data.result[0];
+        const hash = generateHash(data.password, user.salt);
+
+        if (hash != user.hash) {
+
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Combinação de e-mail e senha incorreta."
+            });
+            return;
+
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Logado com sucesso."
+        });
+
+    }
+
 }
 
 function generateSalt() {
@@ -73,6 +132,28 @@ function generateSalt() {
 
 function generateHash(password, salt) {
     return crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex"); 
+}
+
+async function validateEmail(email, errors) {
+    if ( email == null || email == undefined || !validator.isEmail(String(email)) || !String(email).endsWith("@aluno.ufabc.edu.br") ) {
+        errors.push({
+            field: "email",
+            error: "E-mail inválido."
+        });
+        return false;
+    }
+    return true;
+}
+
+async function validatePassword(password, errors) {
+    if ( password == null || password == undefined || String(password).length < 6 ) {
+        errors.push({
+            field: "password",
+            error: "Senha inválida."
+        });
+        return false;
+    }
+    return true;
 }
 
 async function validateNewUser(data) {
@@ -94,19 +175,10 @@ async function validateNewUser(data) {
             error: "O campo não pode ser vazio."
         });
     }
-    if ( email == null || email == undefined || !validator.isEmail(String(email)) || !String(email).endsWith("@aluno.ufabc.edu.br") ) {
-        errors.push({
-            field: "email",
-            error: "E-mail inválido."
-        });
-        validEmail = false;
-    }
-    if ( password == null || password == undefined || String(password).length < 6 ) {
-        errors.push({
-            field: "password",
-            error: "Senha inválida."
-        });
-    }
+
+    validEmail = validateEmail(email, errors);
+    validatePassword(password, errors);
+
     if ( ra == null || ra == undefined || String(ra).length < 8 || isNaN(ra) || validator.contains(String(ra), ".") ) {
         errors.push({
             field: "ra",
@@ -141,6 +213,16 @@ async function validateNewUser(data) {
         }
     }
     
+    return errors;
+}
+
+async function validateLogin(data) {
+    const { email, password } = data;
+    var errors = [];
+
+    validateEmail(email, errors);
+    validatePassword(password, errors);
+
     return errors;
 }
 

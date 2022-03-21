@@ -11,5 +11,6 @@ router.get("/", async (req, res) => {
 
 // User Routes
 router.post("/user", UserController.create);
+router.post("/login", UserController.login);
 
 module.exports = router;
