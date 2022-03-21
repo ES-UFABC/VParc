@@ -15,7 +15,7 @@ class UserRepository {
 
     async create(user) {
 
-        const { first_name, last_name, email, ra, cellphone, hash } = user;
+        const { first_name, last_name, email, ra, cellphone, hash, salt } = user;
 
         const newUser = new User({
             first_name,
@@ -23,7 +23,8 @@ class UserRepository {
             email, 
             ra, 
             cellphone, 
-            hash
+            hash,
+            salt
         });
 
         try {
@@ -48,11 +49,11 @@ class UserRepository {
 
         try {
 
-            const { id, first_name, last_name, email, ra, cellphone, hash, active } = user;
+            const { id, first_name, last_name, email, ra, cellphone, hash, salt, active } = user;
             
             await User.updateOne(
                 { _id: id }, 
-                { first_name, last_name, email, ra, cellphone, hash, active }
+                { first_name, last_name, email, ra, cellphone, hash, salt, active }
             );
 
             return {
