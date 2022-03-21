@@ -32,7 +32,32 @@ class UserRepository {
 
             return {
                 status: true,
-                message: "Usuário Cadastrado!"
+                message: "SUCCESS"
+            };
+
+        } catch (err) {
+
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+
+        }
+
+    }
+
+    async update(user) {
+
+        try {
+
+            const { id, first_name, last_name, email, ra, cellphone, hash } = user;
+            
+            await User.updateOne(
+                { _id: id }, 
+                { first_name, last_name, email, ra, cellphone, hash }
+            );
+
+            return {
+                status: true,
+                message: "SUCCESS"
             };
 
         } catch (err) {
