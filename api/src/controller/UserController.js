@@ -45,7 +45,7 @@ class UserController {
 
         const result = await UserRepository.create(user);
 
-        if (result.status) {
+        if (result.status == true) {
 
             res.status(201); // created
             res.json({
