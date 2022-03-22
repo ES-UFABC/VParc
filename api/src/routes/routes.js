@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Controllers
 const UserController = require("../controller/UserController");
+const CategoryController = require("../controller/CategoryController");
 
 // Middlewares
 const Middlewares = require("../middleware/Middlewares");
@@ -15,5 +16,11 @@ router.get("/", Middlewares.loggedUser, async (req, res) => {
 // User Routes
 router.post("/user", UserController.create);
 router.post("/login", UserController.login);
+
+// Category Routes
+router.get("/category", CategoryController.findAll);
+router.get("/category/:id", CategoryController.findById);
+router.post("/category/:newCategory", CategoryController.create);
+router.delete("/category/:id", CategoryController.delete);
 
 module.exports = router;
