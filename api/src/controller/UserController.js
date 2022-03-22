@@ -1,5 +1,8 @@
+require("dotenv").config();
+
 const crypto = require("crypto");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
 
 const UserRepository = require("../repository/UserRepository");
 
@@ -117,10 +120,20 @@ class UserController {
 
         }
 
+        // generating JWT token
+        const token = await jwt.sign(
+            { userId: user._id }, 
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
+
         res.status(200); // ok
         res.json({
             status: true,
-            message: "Logado com sucesso."
+            message: "Logado com sucesso.",
+            data: {
+                token
+            }
         });
 
     }
