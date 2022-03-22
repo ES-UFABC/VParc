@@ -123,6 +123,39 @@ class CategoryRepository {
 
     }
 
+    async findByDescription(description) {
+
+        try {
+
+            const result = await Category.find().where({
+                description
+            }).lean();
+
+            if (result.length > 0) {
+
+                return {
+                    status: true,
+                    data: {
+                        length: result.length,
+                        result
+                    }
+                }
+
+            } else {
+
+                return newErrorMessage("NOT FOUND")
+
+            }
+            
+        } catch (err) {
+
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+            
+        }
+
+    }
+
 }
 
 module.exports = new CategoryRepository();
