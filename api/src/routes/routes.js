@@ -4,8 +4,11 @@ const router = express.Router();
 // Controllers
 const UserController = require("../controller/UserController");
 
+// Middlewares
+const Middlewares = require("../middleware/Middlewares");
+
 // Main Routes
-router.get("/", async (req, res) => {
+router.get("/", Middlewares.loggedUser, async (req, res) => {
     res.send("Rota principal.");
 });
 
