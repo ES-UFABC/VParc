@@ -36,6 +36,12 @@ const User = new Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    type: {
+        type: String,
+        enum: ["admin", "user"],
+        required: true,
+        default: "user"
     }
 });
 
