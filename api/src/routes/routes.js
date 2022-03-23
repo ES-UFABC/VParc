@@ -20,7 +20,7 @@ router.post("/login", UserController.login);
 // Category Routes
 router.get("/category", CategoryController.findAll);
 router.get("/category/:id", CategoryController.findById);
-router.post("/category/:newCategory", CategoryController.create);
-router.delete("/category/:id", CategoryController.delete);
+router.post("/category/:newCategory", Middlewares.admin, CategoryController.create);
+router.delete("/category/:id", Middlewares.admin, CategoryController.delete);
 
 module.exports = router;
