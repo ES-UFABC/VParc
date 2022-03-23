@@ -1,8 +1,4 @@
-const mongoose = require("mongoose");
-const NAMES = require("../database/names");
-
-require("../model/Category");
-const Category = mongoose.model(NAMES.CATEGORIES);
+const Category = require("../model/Category");
 
 // TODO: move this function somewhere else
 function newErrorMessage(message, error) {

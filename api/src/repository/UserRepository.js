@@ -1,8 +1,4 @@
-const mongoose = require("mongoose");
-const NAMES = require("../database/names");
-
-require("../model/User");
-const User = mongoose.model(NAMES.USERS);
+const User = require("../model/User");
 
 function newErrorMessage(message, error) {
     return {
