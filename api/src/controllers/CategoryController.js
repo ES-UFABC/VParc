@@ -1,6 +1,6 @@
-const validator = require("validator");
-
 const CategoryRepository = require("../repositories/CategoryRepository");
+
+const CategoryValidator = require("../validators/CategoryValidator");
 
 class CategoryController {
 
@@ -57,7 +57,7 @@ class CategoryController {
 
         const newCategory = req.params.newCategory;
 
-        const errors = await validateCategory(newCategory);
+        const errors = await CategoryValidator.validateNew(newCategory);
 
         if (errors.length > 0) {
             res.status(400); // bad request
@@ -136,19 +136,6 @@ class CategoryController {
 
     }
 
-}
-
-async function validateCategory(category) {
-    var errors = [];
-
-    if ( !category || validator.isEmpty(String(category), { ignore_whitespace: true }) ) {
-        errors.push({
-            field: "category",
-            error: "O campo não pode ser vazio."
-        });
-    }
-
-    return errors;
 }
 
 module.exports = new CategoryController();

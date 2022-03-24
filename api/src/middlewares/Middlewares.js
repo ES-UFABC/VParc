@@ -30,6 +30,7 @@ class Middlewares {
             }
 
             req.userId = decoded.userId;
+            req.admin = decoded.admin;
             next();
 
         });
@@ -71,6 +72,7 @@ class Middlewares {
                 return;
             }
 
+            req.userId = decoded.userId;
             req.admin = decoded.admin;
             next();
 

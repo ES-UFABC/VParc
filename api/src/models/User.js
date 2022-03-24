@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const NAMES = require("../database/names");
+const ENUMS = require("../database/enums");
 
 const User = new Schema({
     first_name: {
@@ -39,7 +40,7 @@ const User = new Schema({
     },
     type: {
         type: String,
-        enum: ["admin", "user"],
+        enum: ENUMS.USER.TYPE,
         required: true,
         default: "user"
     }

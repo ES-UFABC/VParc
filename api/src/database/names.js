@@ -1,6 +1,6 @@
 module.exports = {
     USERS: "users",
-    ADS: "ads",
+    ADVERTISEMENTS: "advertisements",
     CATEGORIES: "categories",
     CONDITIONS: "conditions"
 };

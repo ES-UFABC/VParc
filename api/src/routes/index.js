@@ -4,6 +4,7 @@ const router = express.Router();
 // Controllers
 const UserController = require("../controllers/UserController");
 const CategoryController = require("../controllers/CategoryController");
+const AdvertisementController = require("../controllers/AdvertisementController");
 
 // Middlewares
 const Middlewares = require("../middlewares/Middlewares");
@@ -22,5 +23,10 @@ router.get("/category", CategoryController.findAll);
 router.get("/category/:id", CategoryController.findById);
 router.post("/category/:newCategory", Middlewares.admin, CategoryController.create);
 router.delete("/category/:id", Middlewares.admin, CategoryController.delete);
+
+// Advertisement Routes
+router.get("/advertisement", Middlewares.loggedUser, AdvertisementController.findAll);
+router.get("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.findById);
+router.post("/advertisement", Middlewares.loggedUser, AdvertisementController.create);
 
 module.exports = router;
