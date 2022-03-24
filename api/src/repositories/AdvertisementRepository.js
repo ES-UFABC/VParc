@@ -41,6 +41,32 @@ class AdvertisementRepository {
 
     }
 
+    async deleteById(id) {
+
+        try {
+
+            const result = await Advertisement.findByIdAndDelete(id);
+
+            if (result) {
+
+                return {
+                    status: true,
+                    message: "SUCCESS"
+                };
+
+            } else {
+                return newErrorMessage("NOT FOUND");
+            }
+
+        } catch (err) {
+            
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+
+        }
+
+    }
+
     async findAll() {
             
         try {

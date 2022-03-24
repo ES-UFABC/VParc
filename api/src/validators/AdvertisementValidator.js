@@ -4,7 +4,27 @@ const ENUMS = require("../database/enums");
 
 const CategoryValidator = require("./CategoryValidator");
 
+const AdvertisementRepository = require("../repositories/AdvertisementRepository");
+
 class AdvertisementValidator {
+
+    async validateOwnership(advertisementId, userId, admin) {
+
+        if (admin) return true;
+
+        const advertisement = await AdvertisementRepository.findById(advertisementId);
+
+        if ( advertisement.status == false ) {
+            return false;
+        }
+
+        if ( advertisement.data.result[0].userId != userId ) {
+            return false;
+        }
+
+        return true;
+
+    }
 
     async validateNew(advertisement) {
         const { title, description, price, bookCondition, categoryIds, userId } = advertisement;

@@ -28,5 +28,6 @@ router.delete("/category/:id", Middlewares.admin, CategoryController.delete);
 router.get("/advertisement", Middlewares.loggedUser, AdvertisementController.findAll);
 router.get("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.findById);
 router.post("/advertisement", Middlewares.loggedUser, AdvertisementController.create);
+router.delete("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.delete);
 
 module.exports = router;

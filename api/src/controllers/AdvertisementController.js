@@ -109,6 +109,39 @@ class AdvertisementController {
 
     }
 
+    // (DELETE) /advertisement/:id
+    async delete(req, res) {
+
+        const id = req.params.id;
+
+        if (await AdvertisementValidator.validateOwnership(id, req.userId, req.admin) == false) {
+            res.status(403); // forbidden
+            res.json({
+                status: false,
+                message: "Você não tem permissão para deletar este anúncio."
+            });
+            return;
+        }
+
+        const result = await AdvertisementRepository.deleteById(id);
+
+        if (result.status == false) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Anúncio não existe."
+            });
+            return;
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Anúncio excluído."
+        });
+
+    }
+
 }
 
 module.exports = new AdvertisementController();
