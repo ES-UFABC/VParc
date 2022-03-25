@@ -8,35 +8,34 @@ import UserRegistrationComponent from './features/user-registration-page/userReg
 import ListPageComponent from './features/list-page/listPageComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AuthProvider from './context/userAuth';
+import User from './models/user';
 
-export const theme={
-  ...DefaultTheme,
-  colors:{
-    ...DefaultTheme.colors,
-    primary:"#657fac", //logo
-    secundary:'#8da4cd', //fundo
-    tertiary:"#839bc4", //input
-  }
-}
+
 
 const Stack = createNativeStackNavigator();
 
 
 const App = () => {
+
+  const [isAuth,setAuth] = useState(false);
   
+
   return (
-    <PaperProvider >
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="LandPage">
-        
-            <Stack.Screen name="LandPage" component={LandPageComponent} />
-            <Stack.Screen name="Login" component={LoginComponent} />
-            <Stack.Screen name="UserRegistration" component={UserRegistrationComponent} />
-            <Stack.Screen name="ListPage" component={ListPageComponent} options={{headerShown:null}}/>
-        
-      </Stack.Navigator>
-    </NavigationContainer>
-    </PaperProvider>
+    <AuthProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="LandPage">
+
+                <Stack.Screen name="LandPage" component={LandPageComponent} />
+                <Stack.Screen name="Login" component={LoginComponent} />
+                <Stack.Screen name="UserRegistration" component={UserRegistrationComponent} />
+                <Stack.Screen name="ListPage" component={ListPageComponent} options={{headerShown:null}}/>
+            
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthProvider>
   );
 }
 

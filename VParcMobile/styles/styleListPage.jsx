@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     },
     searchBar:{
         backgroundColor:colors.secundary,
+        width:'65%'
     }
 })
 

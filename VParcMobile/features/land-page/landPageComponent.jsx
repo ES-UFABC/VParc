@@ -19,10 +19,12 @@ const LandPageComponent = ({navigation}) => {
 
     return (
             <View style={styles.container}>
+                
                 <View style={styles.tituloLogo}>
                     <Text style={styles.titulo}>VParc</Text>
                     <Image source={logo} style={{width:180, height:180}}/>
                 </View>
+
                 <MenuButtonComponent 
                     titulo="Criar conta"
                     cor={colors.primary}

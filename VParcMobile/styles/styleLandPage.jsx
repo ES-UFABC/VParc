@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
     tituloLogo:{
       alignItems:'center',
-      marginBottom:30,
+      marginBottom:'40%',
     },
     titulo:{
         alignText:'center',
