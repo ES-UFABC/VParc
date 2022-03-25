@@ -67,6 +67,29 @@ class AdvertisementRepository {
 
     }
 
+    async updateById(id, advertisement) {
+
+        try {
+            
+            const { title, description, price, bookCondition, categoryIds } = advertisement;
+
+            await Advertisement.updateOne(
+                { _id: id },
+                { title, description, price, bookCondition, categoryIds }
+            );
+
+            return {
+                status: true,
+                message: "SUCCESS"
+            };
+
+        } catch (err) {
+            console.log(err);
+            return newErrorMessage("ERROR", err);
+        }
+
+    }
+
     async findAll() {
             
         try {

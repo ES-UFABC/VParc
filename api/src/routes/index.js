@@ -29,5 +29,6 @@ router.get("/advertisement", Middlewares.loggedUser, AdvertisementController.fin
 router.get("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.findById);
 router.post("/advertisement", Middlewares.loggedUser, AdvertisementController.create);
 router.delete("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.delete);
+router.put("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.update);
 
 module.exports = router;

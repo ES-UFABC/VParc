@@ -142,6 +142,68 @@ class AdvertisementController {
 
     }
 
+    // (PUT) /advertisement/:id
+    async update(req, res) {
+
+        const id = req.params.id;
+
+        if (await AdvertisementValidator.validateOwnership(id, req.userId, req.admin) == false) {
+            res.status(403); // forbidden
+            res.json({
+                status: false,
+                message: "Você não tem permissão para editar este anúncio."
+            });
+            return;
+        }
+
+        const data = req.body; // retrieve data from the body's request
+
+        // validate the data
+        const errors = await AdvertisementValidator.validateUpdate(data);
+
+        if (errors.length > 0) { 
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Dados inválidos!",
+                data: {
+                    length: errors.length,
+                    errors
+                }
+            });
+            return;
+        }
+
+        // update the advertisement
+        const advertisement = {
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            bookCondition: data.bookCondition,
+            categoryIds: data.categoryIds
+        }
+
+        const result = await AdvertisementRepository.updateById(id, advertisement);
+
+        if (result.status == false) {
+
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Anúncio não existe."
+            });
+            return;
+
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Anúncio atualizado." 
+        });
+
+    }
+
 }
 
 module.exports = new AdvertisementController();
