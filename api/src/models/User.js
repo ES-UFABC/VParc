@@ -36,7 +36,7 @@ const User = new Schema({
     active: {
         type: Boolean,
         required: true,
-        default: true
+        default: false
     },
     type: {
         type: String,
