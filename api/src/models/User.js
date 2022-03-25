@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const NAMES = require("../database/names");
+const ENUMS = require("../database/enums");
 
 const User = new Schema({
     first_name: {
@@ -36,7 +37,15 @@ const User = new Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    type: {
+        type: String,
+        enum: ENUMS.USER.TYPE,
+        required: true,
+        default: "user"
     }
 });
 
 mongoose.model(NAMES.USERS, User);
+
+module.exports = mongoose.model(NAMES.USERS);

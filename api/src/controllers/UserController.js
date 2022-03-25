@@ -4,8 +4,8 @@ const crypto = require("crypto");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 
-const UserRepository = require("../repository/UserRepository");
-
+const UserRepository = require("../repositories/UserRepository");
+const UserValidator = require("../validators/UserValidator");
 class UserController {
 
     // (POST) /user
@@ -14,7 +14,7 @@ class UserController {
         const data = req.body; // retrieve data from the body's request
 
         // validate the data
-        const errors = await validateNewUser(data);
+        const errors = await UserValidator.validateNew(data);
 
         if (errors.length > 0) {
 
@@ -74,7 +74,7 @@ class UserController {
         const data = req.body; // retrieve data from the body's request
 
         // validate the data
-        const errors = await validateLogin(data);
+        const errors = await UserValidator.validateLogin(data);
 
         if (errors.length > 0) {
 
@@ -122,7 +122,10 @@ class UserController {
 
         // generating JWT token
         const token = await jwt.sign(
-            { userId: user._id }, 
+            { 
+                userId: user._id,
+                admin: user.type == "admin" ? true : false
+            }, 
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );
@@ -146,98 +149,6 @@ function generateSalt() {
 
 function generateHash(password, salt) {
     return crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex"); 
-}
-
-async function validateEmail(email, errors) {
-    if ( email == null || email == undefined || !validator.isEmail(String(email)) || !String(email).endsWith("@aluno.ufabc.edu.br") ) {
-        errors.push({
-            field: "email",
-            error: "E-mail inválido."
-        });
-        return false;
-    }
-    return true;
-}
-
-async function validatePassword(password, errors) {
-    if ( password == null || password == undefined || String(password).length < 6 ) {
-        errors.push({
-            field: "password",
-            error: "Senha inválida."
-        });
-        return false;
-    }
-    return true;
-}
-
-async function validateNewUser(data) {
-
-    const { first_name, last_name, email, password, ra, cellphone } = data; 
-    var errors = [];
-    var validRA = true;
-    var validEmail = true;
-
-    if ( first_name == null || first_name == undefined || validator.isEmpty(String(first_name), { ignore_whitespace: true }) ) {
-        errors.push({
-            field: "first_name",
-            error: "O campo não pode ser vazio."
-        });
-    }
-    if ( last_name == null || last_name == undefined || validator.isEmpty(String(last_name), { ignore_whitespace: true }) ) {
-        errors.push({
-            field: "last_name",
-            error: "O campo não pode ser vazio."
-        });
-    }
-
-    validEmail = validateEmail(email, errors);
-    validatePassword(password, errors);
-
-    if ( ra == null || ra == undefined || String(ra).length < 8 || isNaN(ra) || validator.contains(String(ra), ".") ) {
-        errors.push({
-            field: "ra",
-            error: "RA inválido."
-        });
-        validRA = false;
-    }
-    if ( cellphone == null || cellphone == undefined || String(cellphone).length < 11 || isNaN(String(cellphone)) || validator.contains(String(cellphone), ".") ) {
-        errors.push({
-            field: "cellphone",
-            error: "Celular inválido."
-        });
-    }
-
-    if ( validEmail ) {
-        var res = await UserRepository.findByEmail(email);
-        if (res.status == true) {
-            errors.push({
-                field: "email",
-                error: "E-mail já cadastrado."
-            })
-        }
-    }
-    
-    if ( validRA ) {
-        var res = await UserRepository.findByRA(ra);
-        if (res.status == true) {
-            errors.push({
-                field: "ra",
-                error: "RA já cadastrado."
-            })
-        }
-    }
-    
-    return errors;
-}
-
-async function validateLogin(data) {
-    const { email, password } = data;
-    var errors = [];
-
-    validateEmail(email, errors);
-    validatePassword(password, errors);
-
-    return errors;
 }
 
 module.exports = new UserController();
