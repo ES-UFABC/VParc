@@ -1,32 +1,23 @@
-import { TouchableOpacity, StyleSheet, Text, View, Image } from "react-native";
-import React, { useState } from "react";
+import { TouchableOpacity,  Text, View, Image } from "react-native";
+import React, {  useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { TextInput, Button,ActivityIndicator, Snackbar } from "react-native-paper";
+import {  Button,ActivityIndicator, Snackbar } from "react-native-paper";
 import { 
   Nunito_200ExtraLight,
   Nunito_200ExtraLight_Italic,
   Nunito_300Light,
-  Nunito_300Light_Italic,
-  Nunito_400Regular,
-  Nunito_400Regular_Italic,
-  Nunito_600SemiBold,
-  Nunito_600SemiBold_Italic,
-  Nunito_700Bold,
-  Nunito_700Bold_Italic,
   Nunito_800ExtraBold,
-  Nunito_800ExtraBold_Italic,
-  Nunito_900Black,
-  Nunito_900Black_Italic 
 } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
 import styles from '../../styles/styleLoginPage';
 import colors from "../../styles/colors";
 import InputFieldLogin from '../../components/inputFieldLogin';
-import logar from '../../services/userService';
 import logo from '../../assets/images/logoBranco.png';
+import {useAuth} from "../../context/userAuth";
+
 
 const LoginComponent = ({navigation}) =>{
-    
+    const { signIn } = useAuth();
     const [isLogin,setLogin] = useState(false);
     const [email,setEmail] = useState('teste1@email.com');
     const [senha,setSenha] = useState('teste1234');
@@ -44,16 +35,16 @@ const LoginComponent = ({navigation}) =>{
 
     const onDismissSnackBar = () => setBarVisible(false);
 
-    const login = async () =>{
+    const handleLogin = async () =>{
       setLogin(true);
-      response = await logar(email, senha);
-      setSnackText(response.message);
-      setBarVisible(true);
-      if(response.message === 'Sucesso'){
-        navigation.push('ListPage');
-      }
-      setLogin(false);
+      await signIn(email, senha).then((response)=>{
+        setSnackText(response.message);
+        setBarVisible(true);
+        setLogin(false);
+      });
     }
+
+    
 
     let [fontsloaded] = useFonts({
       Nunito_200ExtraLight,
@@ -91,7 +82,7 @@ const LoginComponent = ({navigation}) =>{
                 </View>  
                 </View>
                 <View style={{width:'100%', alignItems:'center', marginTop:'20%'}}>                  
-                  <TouchableOpacity style={styles.loginBtn} onPress={()=>login()}>
+                  <TouchableOpacity style={styles.loginBtn} onPress={()=>handleLogin()}>
                       <Text style={styles.loginTxt} >LOGIN</Text>
                   </TouchableOpacity>
                   
