@@ -70,7 +70,6 @@ class UserController {
 
     // (POST) /login
     async login(req, res) {
-
         const data = req.body; // retrieve data from the body's request
 
         // validate the data

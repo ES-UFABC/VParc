@@ -4,6 +4,7 @@ import { Appbar,  Searchbar, Drawer, Card, Title, Paragraph, Button } from "reac
 import colors from "../../styles/colors";
 import styles from "../../styles/styleListPage";
 import listaAnuncios from "../../mock/anunciosMock";
+import { useAuth } from "../../context/userAuth";
 
 
 const AnuncioCardComponent = (props) =>{
@@ -23,6 +24,7 @@ const AnuncioCardComponent = (props) =>{
 
 const ListPageComponent = ({navigation}) => {
     
+    const { logout } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
     const [drawerActive, setDrawer] = useState(false);
 
@@ -30,7 +32,7 @@ const ListPageComponent = ({navigation}) => {
         setDrawer(!drawerActive);
         
     }
-
+    const handleLogout = async ()=> { await logout();}
     
     return(
         <View>
@@ -38,14 +40,16 @@ const ListPageComponent = ({navigation}) => {
                 <Appbar.Action icon='text' onPress={()=>updateDrawer()}/>
                 <Searchbar placeholder="Pesquisar" style={styles.searchBar}/>
                 <Appbar.Action icon='filter' />
-                <Appbar.Action icon='account'/>
+                <Appbar.Action icon='account' onPress={() => handleLogout()}/>
 
             </Appbar.Header>
+
             {drawerActive?(
                 <Drawer.Section style={{backgroundColor:colors.primary}}>
-                    <Drawer.Item label="Logout" icon='logout'/>
+                    <Drawer.Item label="Logout" icon='logout'  />
                 </Drawer.Section>) : null
             }
+
             {
                 listaAnuncios.map((anuncio, index)=>{
                     return(
