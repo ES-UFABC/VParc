@@ -1,7 +1,7 @@
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { TextInput, Button,ActivityIndicator } from "react-native-paper";
+import { TextInput, Button,ActivityIndicator, Snackbar } from "react-native-paper";
 import { 
   Nunito_200ExtraLight,
   Nunito_200ExtraLight_Italic,
@@ -22,14 +22,18 @@ import { useFonts } from "@expo-google-fonts/nunito";
 import styles from '../../styles/styleLoginPage';
 import colors from "../../styles/colors";
 import InputFieldLogin from '../../components/inputFieldLogin';
-import UserService from "../../services/userService";
+import logar from '../../services/userService';
+import logo from '../../assets/images/logoBranco.png';
 
 const LoginComponent = ({navigation}) =>{
     
     const [isLogin,setLogin] = useState(false);
-    const [email,setEmail] = useState('');
-    const [senha,setSenha] = useState('');
+    const [email,setEmail] = useState('teste1@email.com');
+    const [senha,setSenha] = useState('teste1234');
+    const [barVisible, setBarVisible] = useState(false);
+    const [snackBarText,setSnackText] = useState('');
 
+    let response={};
     const updateEmail = (email) =>{
       setEmail(email);
     }
@@ -38,10 +42,17 @@ const LoginComponent = ({navigation}) =>{
       setSenha(senha);
     }
 
-    const login = () =>{
+    const onDismissSnackBar = () => setBarVisible(false);
+
+    const login = async () =>{
       setLogin(true);
-      console.log(email + ' ' + senha);
-      setTimeout(()=>setLogin(false),4000); 
+      response = await logar(email, senha);
+      setSnackText(response.message);
+      setBarVisible(true);
+      if(response.message === 'Sucesso'){
+        navigation.push('ListPage');
+      }
+      setLogin(false);
     }
 
     let [fontsloaded] = useFonts({
@@ -55,28 +66,31 @@ const LoginComponent = ({navigation}) =>{
         <View style={styles.container}>
             <StatusBar style="auto"/>
             {!isLogin ? (
-              <View style={{width:'100%', alignItems:'center'}}>
-            <Text style={
-                styles.titulo
-                }>VParc
-            </Text>
-            
-                <View style={styles.inputView}> 
-                    <InputFieldLogin
-                      value={email}
-                      placeholder="Email"
-                      onChangeText={(email)=>updateEmail(email)}
-                    />
-                </View>  
-              
-                <View style={styles.inputView}> 
-                    <InputFieldLogin
-                      value={senha}
-                      placeholder='Senha'
-                      onChangeText={(senha)=>updateSenha(senha)}
-                    />
-                </View>  
+              <View style={{width:'100%', height:'80%',alignItems:'center'}}>
                 
+                <View styles={{alignItems:'center'}}>
+                  <Text style={styles.titulo}>VParc</Text>
+                  <Image source={logo} style={{width:180, height:180}}/>
+                </View>
+
+                <View style={{marginTop:'20%', width:'100%', alignItems:'center'}}>
+                  <View style={styles.inputView}> 
+                      <InputFieldLogin
+                        value={email}
+                        placeholder="Email"
+                        onChangeText={(email)=>updateEmail(email)}
+                      />
+                  </View>  
+                
+                  <View style={styles.inputView}> 
+                      <InputFieldLogin
+                        value={senha}
+                        placeholder='Senha'
+                        onChangeText={(senha)=>updateSenha(senha)}
+                      />
+                </View>  
+                </View>
+                <View style={{width:'100%', alignItems:'center', marginTop:'20%'}}>                  
                   <TouchableOpacity style={styles.loginBtn} onPress={()=>login()}>
                       <Text style={styles.loginTxt} >LOGIN</Text>
                   </TouchableOpacity>
@@ -89,13 +103,19 @@ const LoginComponent = ({navigation}) =>{
                   >
                     <Text style={styles.forgot_txt}>Esqueci a senha</Text>
                   </Button>
+                </View>
               </View>
              ): 
              (
               <ActivityIndicator size='large' animating={true} color={colors.white} />
              )
             }
-            
+            <Snackbar visible={barVisible} 
+                      onDismiss={onDismissSnackBar} 
+                      action={{label:'OK',onPress:()=>onDismissSnackBar}}
+            >
+              <Text>{snackBarText}</Text>
+            </Snackbar>
         </View>
     );
 }

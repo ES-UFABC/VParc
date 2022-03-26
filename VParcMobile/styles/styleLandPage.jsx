@@ -7,9 +7,13 @@ const styles = StyleSheet.create({
       fontFamily:'Nunito_800ExtraBold',
       fontSize:20,
     },
+    tituloLogo:{
+      alignItems:'center',
+      marginBottom:'40%',
+    },
     titulo:{
         alignText:'center',
-        marginBottom:220,
+        
         fontSize:45,
         fontFamily:'Nunito_800ExtraBold'
     },

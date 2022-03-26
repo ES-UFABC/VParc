@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
       fontFamily:'Nunito_800ExtraBold'
     },
     titulo:{
-      marginBottom:100,
+      textAlign:'center',
       color:'white',
       fontWeight:'bold',
-      fontSize:30,
+      fontSize:50,
       fontFamily:'Nunito_800ExtraBold'
     },
     container: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
       borderRadius: 25,
       height: 50,
       alignItems: "center",
-      marginTop: 60,
+      marginTop: 25,
       backgroundColor: colors.primary,
       justifyContent:'center'
     },

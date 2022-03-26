@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito_400Regular'
     },
     textContainer: {
-        marginTop: 30,
+        //marginTop: 10,
         marginBottom: 24,
         marginHorizontal: 30,
         flex: 1,
