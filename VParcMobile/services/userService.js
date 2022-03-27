@@ -12,6 +12,7 @@ const login = async (email, senha)  => {
                     response = responseAPI.data
                 })
                 .catch(error=>response = error.response.data);
+    axios.defaults.headers.common['authorization'] = response.data.token;
     return response;
 }
 

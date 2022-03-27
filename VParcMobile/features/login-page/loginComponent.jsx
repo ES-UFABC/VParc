@@ -19,8 +19,8 @@ import {useAuth} from "../../context/userAuth";
 const LoginComponent = ({navigation}) =>{
     const { signIn } = useAuth();
     const [isLogin,setLogin] = useState(false);
-    const [email,setEmail] = useState('teste1@email.com');
-    const [senha,setSenha] = useState('teste1234');
+    const [email,setEmail] = useState('gustavo.olival@aluno.ufabc.edu.br');
+    const [senha,setSenha] = useState('Gust@vo100');
     const [barVisible, setBarVisible] = useState(false);
     const [snackBarText,setSnackText] = useState('');
 
@@ -77,6 +77,7 @@ const LoginComponent = ({navigation}) =>{
                       <InputFieldLogin
                         value={senha}
                         placeholder='Senha'
+                        secureTextEntry = {true}
                         onChangeText={(senha)=>updateSenha(senha)}
                       />
                 </View>  
