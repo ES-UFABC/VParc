@@ -69,4 +69,4 @@ const updateAdvertisement = async (advertisement)=>{
     return response;
 }
 
-export {getAll, deleteAdvertisement, updateAdvertisement};
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement};

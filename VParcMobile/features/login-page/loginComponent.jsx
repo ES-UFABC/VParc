@@ -19,8 +19,8 @@ import {useAuth} from "../../context/userAuth";
 const LoginComponent = ({navigation}) =>{
     const { signIn } = useAuth();
     const [isLogin,setLogin] = useState(false);
-    const [email,setEmail] = useState('gustavo.olival@aluno.ufabc.edu.br');
-    const [senha,setSenha] = useState('Gust@vo100');
+    const [email,setEmail] = useState('');
+    const [senha,setSenha] = useState('');
     const [barVisible, setBarVisible] = useState(false);
     const [snackBarText,setSnackText] = useState('');
 

@@ -28,19 +28,11 @@ const AnuncioCardComponent = (props) =>{
 const ListPageComponent = ({navigation}) => {
     
     const { logout } = useAuth();
-    // const [searchQuery, setSearchQuery] = useState('');
-    // const [drawerActive, setDrawer] = useState(false);
+    
     const [advertisementList, setAdList] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    // const updateDrawer = () =>{
-    //     setDrawer(!drawerActive);
-        
-    // }
+    
     const handleLogout = async ()=> { await logout();}
-
-    const createAdvertisement = () =>{
-        navigation.push()
-    }
 
     useEffect(()=>{
         //carregar a lista de anuncios quando terminar de carregar a página
@@ -58,38 +50,27 @@ const ListPageComponent = ({navigation}) => {
     return(
         <View>
             <Appbar.Header style={styles.appBar}>
-                {/* <Appbar.Action icon='text' onPress={()=>updateDrawer()}/> */}
                 <Searchbar placeholder="Pesquisar" style={styles.searchBar}/>
                 <Appbar.Action icon='filter' />
                 <Appbar.Action icon='account' onPress={() => handleLogout()}/>
                 <Appbar.Action icon='refresh' onPress={() => setLoaded(false)}/>
             </Appbar.Header>
-            
-            {/* {drawerActive?(
-                <Drawer.Section style={{backgroundColor:colors.primary}}>
-                    <Drawer.Item label="Logout" icon='logout'  />
-                </Drawer.Section>) : null
-            } */}
-            
             <ScrollView>
             {
                 advertisementList.map((advertisement, index)=>{
-                    
                     return(
                         <AnuncioCardComponent key={index} advertisement={advertisement} navigation={navigation}/>
                     )
                 })
             }
-            
             </ScrollView>
             <View >
                     <FAB
-                        style={{margin:16, position:'fixed', right:0, bottom:0}}
+                        style={{margin:16, position:'fixed', right:0, bottom:0, backgroundColor:colors.primary}}
                         icon="plus"
                         onPress={() => navigation.push('CreateAdvertisement')}
                     />
-            </View>
-            
+            </View> 
         </View>
     )
 }

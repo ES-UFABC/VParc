@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
         flex:1
     },
     appBarTitleItem:{
-        flex:1,
-        fontSize:20
+        fontSize:20,
+        fontFamily:'Nunito_800ExtraBold'
     },
     tituloTag:{
         fontSize:30,

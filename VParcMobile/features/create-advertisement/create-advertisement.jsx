@@ -39,11 +39,9 @@ const CreateAdvertisementComponent = ({navigation}) =>{
     }
 
     const updateSelectedCategories = (value) => {
-        console.log(value);
         selectedCategoriesList = [];
         value.selectedList.map (
             (category, index) => {
-                console.log(category);
                 selectedCategoriesList.push(category._id);
             }
         )
@@ -51,21 +49,16 @@ const CreateAdvertisementComponent = ({navigation}) =>{
             ...categories,
             selectedList: selectedCategoriesList
         })
-        console.log(selectedCategoriesList);
     }
 
     const handleCategories = async () => {
         if(!loaded){
-
-        
             await getAllCategories().then(
                 (response)=>{
-                    console.log(response);
                     if (response.status === true) {
                         setLoaded(true);
                         response.data.result.map(
                             (category, index) => {
-                                console.log(category);
                                 let categoryObj = { _id: category._id, value: category.description };
                                 categoriesList.push(categoryObj); 
                             }
@@ -104,7 +97,6 @@ const CreateAdvertisementComponent = ({navigation}) =>{
 
     useEffect(()=>{
         handleCategories();
-        console.log(categories);
     })
 
     let [fontsLoaded] = useFonts({
