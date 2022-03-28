@@ -13,10 +13,10 @@ const AnuncioCardComponent = (props) =>{
         navigation.push('AdvertisementPage', anuncio);
     }
     return(
-        <Card style={{backgroundColor:'gray', marginTop:'10%'}}>
-            <Card.Title title={anuncio.title}/>
+        <Card style={{backgroundColor:colors.white, marginStart: '2%', marginEnd: '2%', marginTop: '2%'}}>
+            <Card.Title title={anuncio.title} style={{ color: colors.white, backgroundColor: colors.secundary, marginBottom: '2%'}}/>
             <Card.Content>
-                <Paragraph>{anuncio.description}</Paragraph>  
+                <Paragraph style={{ color:colors.black}}>R$ {anuncio.price} </Paragraph>  
             </Card.Content>
             <Card.Actions>
                 <Button style={{alignItems:'right'}} onPress={()=>showAdPage()}>Ver detalhes</Button>
