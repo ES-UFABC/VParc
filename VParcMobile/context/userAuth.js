@@ -8,23 +8,27 @@ const AuthProvider = ({ children }) => {
   const [signed, setSigned] = useState(false);
 
   async function signIn(email, senha) {
-    let response = await login(email, senha);
-    
-    if(response.status === true){
-      setSigned(true);
-      setUser({email:email,senha:senha});
+    if(!signed){
+      let response = await login(email, senha);
+      if(response.status === true){
+        setSigned(true);
+        setUser({email:email,senha:senha});
+      }
+      return response;
     }
-    return response;
   }
   
   async function logout(){
-    setSigned(false);
+    if(signed){
+      setSigned(false);
+    }
   }
 
   async function signUp(user){
     let response = await register(user)
     return response;
   }
+  
   return (
     <AuthContext.Provider value={{ signed: signed, user: {}, signIn, logout, signUp }}>
       {children}
