@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const BASE_URL = 'http://localhost:3000/api';
 
 const getAll = async () =>{
@@ -19,9 +18,9 @@ const getAll = async () =>{
     return advertisements;
 }
 
-const createAdvertisement = (advertisement) =>{
-    let response = {};
-    axios.post(BASE_URL + '/advertisement')
+const createAdvertisement = async (advertisement) =>{
+    let response = [{}];
+    axios.post(BASE_URL + '/advertisement', advertisement)
         .then(
             (responseApi)=>{
                 response = responseApi;
@@ -32,6 +31,8 @@ const createAdvertisement = (advertisement) =>{
                 response = error.response.data;
             }
         )
+    return response
 }
 
 export {getAll};
+export {createAdvertisement};

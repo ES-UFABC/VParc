@@ -10,7 +10,7 @@ const AppRoutes = () => {
     return(
         <Stack.Navigator>
             <Stack.Screen name="ListPage" component={ListPageComponent} options={{headerShown:null}}/>
-            <Stack.Screen name="CreateAdvertisement" component={CreateAdvertisementComponent} options={{headerShown:null}}/>
+            <Stack.Screen name="CreateAdvertisement" component={CreateAdvertisementComponent}/>
         </Stack.Navigator>
     )
 }
