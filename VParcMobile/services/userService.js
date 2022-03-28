@@ -1,5 +1,3 @@
-
-import api from "./api";
 import users from "../mock/userMock";
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3000/api';
@@ -12,6 +10,7 @@ const login = async (email, senha)  => {
                     response = responseAPI.data
                 })
                 .catch(error=>response = error.response.data);
+    axios.defaults.headers.common['authorization'] = response.data.token;
     return response;
 }
 

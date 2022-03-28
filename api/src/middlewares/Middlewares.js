@@ -17,8 +17,8 @@ class Middlewares {
         }
 
         const token = authToken.split(" ")[1];
-
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        
+        jwt.verify(authToken, process.env.JWT_SECRET, (err, decoded) => {
 
             if (err) {
                 res.status(400); // bad request
