@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState} from "react";
+import { View, Text } from "react-native";
 import {Appbar, Menu, Button, Dialog, Portal, Paragraph, TextInput, RadioButton} from 'react-native-paper'
 import colors from "../../styles/colors";
 import { 
@@ -11,31 +11,41 @@ import {
 import { useFonts } from "@expo-google-fonts/nunito";
 import { deleteAdvertisement, updateAdvertisement } from "../../services/advertisementService";
 import styles from "../../styles/styleAdvertisementPage";
-
+import AppLoading from 'expo-app-loading';
 const AdvertisementPageComponent = ({route, navigation}) =>{
 
-    let [fontsloaded] = useFonts({
+    const anuncio = route.params;
+
+    const [loaded, setLoaded] = useState(false);
+    const [optionsVisible, setOptionsVisible] = useState(false);
+    const [deleteVisible, setDeleteVisible] = useState(false);
+    const [update,setUpdate] = useState(false);
+    const [description,setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [bookCondition, setBookCondition] = useState('');
+    const [title, setTitle] = useState('');
+    const openDelete = () => setDeleteVisible(true);
+    const closeDelete = () => setDeleteVisible(false);
+    const openOption = () => setOptionsVisible(true);
+    const closeOption = () => setOptionsVisible(false);
+
+    if(!loaded){
+        setDescription(anuncio.description);
+        setPrice(anuncio.price);
+        setBookCondition(anuncio.bookCondition);
+        setTitle(anuncio.title);
+        setLoaded(true);
+    }
+    let [fontsLoaded] = useFonts({
         Nunito_200ExtraLight,
         Nunito_200ExtraLight_Italic,
         Nunito_300Light,
         Nunito_800ExtraBold
       });
-
-    const [optionsVisible, setOptionsVisible] = useState(false);
-    const openOption = () => setOptionsVisible(true);
-    const closeOption = () => setOptionsVisible(false);
-
-    const [deleteVisible, setDeleteVisible] = useState(false);
-    const openDelete = () => setDeleteVisible(true);
-    const closeDelete = () => setDeleteVisible(false);
-
-    const [update,setUpdate] = useState(false);
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
     
-    const anuncio = route.params;
-    const [description,setDescription] = useState(anuncio.description);
-    const [price, setPrice] = useState(anuncio.price);
-    const [bookCondition, setBookCondition] = useState(anuncio.bookCondition);
-    const [title, setTitle] = useState(anuncio.title);
 
     const handleDelete = async () => {
         await deleteAdvertisement(anuncio)
@@ -72,7 +82,6 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
             <Appbar.Header style={styles.appBar}>
                 <Appbar.Action icon='arrow-left' style={{flex:1, alignItems:'left'}} onPress={()=>navigation.pop()}/>
                 <Text style={styles.appBarTitleItem}>{anuncio.title}</Text>
-                {/* <Appbar.Action icon='dots-vertical' style={{alignItems:'right'}} onPress={()=>openOption()}/> */}
                 <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' style={styles.appBarItem} onPress={()=>openOption()}/>}>
                     <Menu.Item onPress={() => openDelete()} title="Deletar"/>
                     <Menu.Item onPress={()=>{setUpdate(true)}} title="Atualizar"/>

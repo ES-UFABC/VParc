@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
       marginBottom:'40%',
     },
     titulo:{
-        alignText:'center',
+        textAlign:'center',
         
         fontSize:45,
         fontFamily:'Nunito_800ExtraBold'

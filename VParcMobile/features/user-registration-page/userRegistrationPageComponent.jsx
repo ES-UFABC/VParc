@@ -8,6 +8,7 @@ import InputFieldRegistration from "../../components/inputFieldRegistration";
 import MenuButtonComponent from "../../components/menuButtonComponent";
 import { useAuth } from "../../context/userAuth";
 import {ActivityIndicator, Snackbar} from 'react-native-paper';
+import AppLoading from 'expo-app-loading';
 const UserRegistrationComponent = ({navigation}) => {
     const {signUp} = useAuth();
 
@@ -81,7 +82,9 @@ const UserRegistrationComponent = ({navigation}) => {
         Nunito_400Regular,
         Nunito_800ExtraBold,
     });
-
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
     return (
         <ScrollView style = { styles.container }>
             {!isRegistering ? 

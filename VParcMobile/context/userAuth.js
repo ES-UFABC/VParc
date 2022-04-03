@@ -9,12 +9,15 @@ const AuthProvider = ({ children }) => {
 
   async function signIn(email, senha) {
     if(!signed){
-      let response = await login(email, senha);
-      if(response.status === true){
-        setSigned(true);
-        setUser({email:email,senha:senha});
-      }
-      return response;
+      await login(email, senha).then(
+        (response)=>{
+          if(response.status === true){
+            setSigned(true);
+            setUser(response.data.user);
+          }
+          return response;
+        }
+      ); 
     }
   }
   
@@ -30,7 +33,7 @@ const AuthProvider = ({ children }) => {
   }
   
   return (
-    <AuthContext.Provider value={{ signed: signed, user: {}, signIn, logout, signUp }}>
+    <AuthContext.Provider value={{ signed: signed, user: user, signIn, logout, signUp }}>
       {children}
     </AuthContext.Provider>
   );
