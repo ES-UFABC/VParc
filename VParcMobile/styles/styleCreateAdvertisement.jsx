@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     description: {
         color: colors.black,
-        fontWeight: 'regular',
+        fontWeight: 'normal',
         fontSize: 16,
         fontFamily: 'Nunito_400Regular',
         alignItems: "center",

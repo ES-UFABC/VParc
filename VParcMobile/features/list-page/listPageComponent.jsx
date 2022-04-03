@@ -19,7 +19,7 @@ const AnuncioCardComponent = (props) =>{
                 <Paragraph style={{ color:colors.black}}>R$ {anuncio.price} </Paragraph>  
             </Card.Content>
             <Card.Actions>
-                <Button style={{alignItems:'right'}} onPress={()=>showAdPage()}>Ver detalhes</Button>
+                <Button  onPress={()=>showAdPage()}>Ver detalhes</Button>
             </Card.Actions>
         </Card> 
     );
@@ -37,15 +37,23 @@ const ListPageComponent = ({navigation}) => {
     useEffect(()=>{
         //carregar a lista de anuncios quando terminar de carregar a página
         if(!loaded){
-            getAll().then(
-                (ads)=>{
-                    setAdList(ads);
-                    setLoaded(true);
+            (async () =>{
+                try{
+                    const res = await getAll().then(
+                        (ads)=>{
+                            setAdList(await ads);
+                            setLoaded(true);
+                        }
+                    )
+                }catch(e){
+                    console.log(e);
                 }
-            )
+                
+            })
+            
         }
         
-    })
+    },[])
 
     return(
         <View>
@@ -66,7 +74,7 @@ const ListPageComponent = ({navigation}) => {
             </ScrollView>
             <View >
                     <FAB
-                        style={{margin:16, position:'fixed', right:0, bottom:0, backgroundColor:colors.primary}}
+                        style={{margin:16, position:'absolute', right:0, bottom:0, backgroundColor:colors.primary}}
                         icon="plus"
                         onPress={() => navigation.push('CreateAdvertisement')}
                     />

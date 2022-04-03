@@ -10,7 +10,7 @@ import { ActivityIndicator, Snackbar, RadioButton } from "react-native-paper";
 import { getAllCategories } from "../../services/categories";
 import { createAdvertisement } from "../../services/advertisementService";
 import MenuButtonComponent from "../../components/menuButtonComponent";
-
+import AppLoading from 'expo-app-loading';
 const CreateAdvertisementComponent = ({navigation}) =>{
 
     let categoriesList = [];
@@ -96,7 +96,7 @@ const CreateAdvertisementComponent = ({navigation}) =>{
     }
 
     useEffect(()=>{
-        handleCategories();
+        await handleCategories();
     })
 
     let [fontsLoaded] = useFonts({
@@ -104,7 +104,9 @@ const CreateAdvertisementComponent = ({navigation}) =>{
         Nunito_400Regular,
         Nunito_800ExtraBold,
     });
-
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
     return(
         <View style = { styles.container }>
 
