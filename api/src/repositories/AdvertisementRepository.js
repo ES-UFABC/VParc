@@ -71,11 +71,11 @@ class AdvertisementRepository {
 
         try {
             
-            const { title, description, price, bookCondition, categoryIds } = advertisement;
+            const { title, description, price, bookCondition, categoryIds, imageUrl } = advertisement;
 
             await Advertisement.updateOne(
                 { _id: id },
-                { title, description, price, bookCondition, categoryIds }
+                { title, description, price, bookCondition, categoryIds, imageUrl }
             );
 
             return {

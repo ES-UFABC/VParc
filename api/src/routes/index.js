@@ -30,5 +30,6 @@ router.get("/advertisement/:id", Middlewares.loggedUser, AdvertisementController
 router.post("/advertisement", Middlewares.loggedUser, AdvertisementController.create);
 router.delete("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.delete);
 router.put("/advertisement/:id", Middlewares.loggedUser, AdvertisementController.update);
+router.post("/advertisement/image", Middlewares.loggedUser, Middlewares.imageUpload, AdvertisementController.uploadImage);
 
 module.exports = router;
