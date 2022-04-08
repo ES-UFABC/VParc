@@ -1,20 +1,31 @@
+import users from "../mock/userMock";
+import axios from 'axios';
+const BASE_URL = 'http://192.168.15.13:3000/api';
 
-import api from "./api";
-
-const UserService = () =>{
-    login = (email, senha)  => {
-        // api.post("/user",{email:email, senha:senha})
-        //     .then((response) => response)
-        //     .catch((error) => error);
-        console.log('chegou');
-    }
-
-    cadastrar = (email, senha) =>{
-        api.post("user/register",{email:email, senha:senha})
-            .then((response) => response)
-            .catch((error) => error);
-    }
-
+const login = async (email, senha)  => {
+    let response;
+    let loginObj = {email:email, password:senha};
+   
+    await axios.post(BASE_URL + '/login', loginObj)
+    .then(responseAPI => {
+        response = responseAPI.data;
+        axios.defaults.headers.common['authorization'] = response.data.token;
+    })
+    .catch(error=>{
+            response = error.response.data;
+        });
+    return response
 }
 
-export default UserService;
+const register =  async (user) =>{
+    let response;
+    
+    await axios.post(BASE_URL + '/user',user)
+                .then((responseAPI) => response = responseAPI.data)
+                .catch((error) => response =  error.response.data);
+    return response;
+}
+
+
+
+export  {login, register};

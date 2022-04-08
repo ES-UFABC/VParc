@@ -2,40 +2,24 @@
 import { useState } from 'react';
 import { StyleSheet,  View } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import LandPageComponent from './features/land-page/landPageComponent';
-import LoginComponent from './features/login-page/loginComponent';
-import UserRegistrationComponent from './features/user-registration-page/userRegistrationPageComponent';
-
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-export const theme={
-  ...DefaultTheme,
-  colors:{
-    ...DefaultTheme.colors,
-    primary:"#657fac", //logo
-    secundary:'#8da4cd', //fundo
-    tertiary:"#839bc4", //input
-  }
-}
-
-const Stack = createNativeStackNavigator();
+import {AuthProvider} from './context/userAuth';
+import Routes from './routes/routes';
 
 
 const App = () => {
+
+  const [isAuth,setAuth] = useState(false);
   
+
   return (
-    <PaperProvider >
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="LandPage">
-        
-            <Stack.Screen name="LandPage" component={LandPageComponent} />
-            <Stack.Screen name="Login" component={LoginComponent} />
-            <Stack.Screen name="UserRegistration" component={UserRegistrationComponent} />
-        
-      </Stack.Navigator>
-    </NavigationContainer>
-    </PaperProvider>
+    <AuthProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Routes />
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthProvider>
   );
 }
 

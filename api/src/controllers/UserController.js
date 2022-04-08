@@ -90,7 +90,6 @@ class UserController {
 
     // (POST) /login
     async login(req, res) {
-
         const data = req.body; // retrieve data from the body's request
 
         // validate the data
@@ -165,6 +164,16 @@ class UserController {
             status: true,
             message: "Logado com sucesso.",
             data: {
+                user: {
+                    id: user._id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    ra: user.ra,
+                    cellphone: user.cellphone,
+                    type: user.type,
+                    active: user.active
+                },
                 token
             }
         });

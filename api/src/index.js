@@ -3,11 +3,23 @@ const express = require("express");
 const app = express();
 const router = require("./routes/index");
 
+const cors = require('cors');
+let corsOption= {
+    origin:'http://localhost:19006',
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOption));
+
+
+
 const connectToMongoDB = require("./database/config");
 
 app.use(express.json());
 
 connectToMongoDB();
+
+
 
 app.use("/api", router);
 
