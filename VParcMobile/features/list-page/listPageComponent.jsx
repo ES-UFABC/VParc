@@ -41,7 +41,7 @@ const ListPageComponent = ({navigation}) => {
                 try{
                     const res = await getAll().then(
                         (ads)=>{
-                            setAdList(await ads);
+                            setAdList(ads);
                             setLoaded(true);
                         }
                     )
