@@ -12,7 +12,7 @@ const InputFieldRegistration = (props) => {
             style = { styles.inputText }
             left = { <TextInput.Icon name = "signature" color = { colors.grayMedium } />}
             placeholderTextColor = { colors.grayMedium }
-            theme = { { color: { text: colors.grayMedium } } }
+            theme = { { colors: { text: colors.grayMedium } } }
         />
     );
 }
