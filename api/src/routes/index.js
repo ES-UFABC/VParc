@@ -16,6 +16,7 @@ router.get("/", Middlewares.loggedUser, async (req, res) => {
 
 // User Routes
 router.post("/user", UserController.create);
+router.get("/user/activate", UserController.activate);
 router.post("/login", UserController.login);
 
 // Category Routes
