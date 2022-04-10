@@ -24,6 +24,11 @@ const Advertisement = new Schema({
         enum: ENUMS.ADVERTISEMENT.BOOK_CONDITION,
         required: true
     },
+    imageUrl: {
+        type: String,
+        required: true,
+        default: ""
+    },
     categoryIds: {
         type: [mongoose.ObjectId]
     },
