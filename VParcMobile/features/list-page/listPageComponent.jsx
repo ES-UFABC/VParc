@@ -33,28 +33,21 @@ const ListPageComponent = ({navigation}) => {
     const [loaded, setLoaded] = useState(false);
     
     const handleLogout = async ()=> { await logout();}
+    
+    const loadAds = async() =>{
+        await getAll().then(
+            (ads)=>{
+                setAdList(ads);
+                setLoaded(true);
+                console.log(ads);
+            }
+        )
+    }
 
-    useEffect(()=>{
-        //carregar a lista de anuncios quando terminar de carregar a página
-        if(!loaded){
-            (async () =>{
-                try{
-                    const res = await getAll().then(
-                        (ads)=>{
-                            setAdList(ads);
-                            setLoaded(true);
-                        }
-                    )
-                }catch(e){
-                    console.log(e);
-                }
-                
-            })
-            
-        }
-        
-    },[])
-
+    if(!loaded){
+        loadAds();
+    }
+    
     return(
         <View>
             <Appbar.Header style={styles.appBar}>
@@ -74,7 +67,7 @@ const ListPageComponent = ({navigation}) => {
             </ScrollView>
             <View >
                     <FAB
-                        style={{margin:16, position:'absolute', right:0, bottom:0, backgroundColor:colors.primary}}
+                        style={{margin:16, position:'fixed', right:0, bottom:0, backgroundColor:colors.primary}}
                         icon="plus"
                         onPress={() => navigation.push('CreateAdvertisement')}
                     />

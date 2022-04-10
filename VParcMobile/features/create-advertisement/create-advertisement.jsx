@@ -11,8 +11,10 @@ import { getAllCategories } from "../../services/categories";
 import { createAdvertisement } from "../../services/advertisementService";
 import MenuButtonComponent from "../../components/menuButtonComponent";
 import AppLoading from 'expo-app-loading';
-const CreateAdvertisementComponent = ({navigation}) =>{
+import { useAuth } from "../../context/userAuth";
 
+const CreateAdvertisementComponent = ({navigation}) =>{
+    const {user} = useAuth();
     let categoriesList = [];
     let selectedCategoriesList = [];
     const [title, setTitle] = useState('');
@@ -87,19 +89,22 @@ const CreateAdvertisementComponent = ({navigation}) =>{
             price: parseInt(price),
             bookCondition: bookCondition,
             categoryIds: categories.selectedList,
-            userId: "623f55f68808e77b14547d24" //Retirar userID
+            userId: user.id 
         }
-        await createAdvertisement(registerObj).then( (response) => {
-            if (response.status === true) {
-                setIsSnackBarVisible(true);
-                setSnackBarText("Anúncio criado com sucesso :)");
-                setTimeout(() => navigation.pop(), 3000);
-            }
-            else {
-                setIsSnackBarVisible(true);
-                setSnackBarText("Algo deu errado, confira as informações preenchidas e tente novamente.");
-            }
+        return await createAdvertisement(registerObj)
+        .then( (response) => {
+                console.log(response);
+                if (response.status === true) {
+                    setIsSnackBarVisible(true);
+                    setSnackBarText("Anúncio criado com sucesso :)");
+                    setTimeout(() => navigation.pop(), 3000);
+                }
+                else {
+                    setIsSnackBarVisible(true);
+                    setSnackBarText("Algo deu errado, confira as informações preenchidas e tente novamente.");
+                }
         })
+        
     }
 
     const onDismissSnackBar = () => setIsSnackBarVisible(false);

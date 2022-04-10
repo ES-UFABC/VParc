@@ -68,10 +68,16 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
         await updateAdvertisement(anuncioObj)
             .then(
                 (response)=>{
+                    console.log(response);
                     setUpdate(false);
                     if(response.data.status === true){
                         navigation.pop();
                     }
+                }
+            )
+            .catch(
+                (error)=>{
+                    setUpdate(false);
                 }
             )
     }

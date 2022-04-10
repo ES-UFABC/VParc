@@ -26,7 +26,6 @@ const Advertisement = new Schema({
     },
     imageUrl: {
         type: String,
-        required: true,
         default: ""
     },
     categoryIds: {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://192.168.15.13:3000/api';
+const BASE_URL = 'http://localhost:3000/api';
 
 const getAll = async () =>{
     let advertisements = [{}];
@@ -8,6 +8,7 @@ const getAll = async () =>{
         .then(
             (response)=>{
                 advertisements = response.data.data.result;
+                
             }
         )
         .catch(
@@ -15,15 +16,16 @@ const getAll = async () =>{
                 advertisements = error.response.data
             }
         )
+    
     return advertisements;
 }
 
 const createAdvertisement = async (advertisement) =>{
     let response = [{}];
-    axios.post(BASE_URL + '/advertisement', advertisement)
+    await axios.post(BASE_URL + '/advertisement', advertisement)
         .then(
             (responseApi)=>{
-                response = responseApi;
+                response = responseApi.data;
             }   
         )
         .catch(
