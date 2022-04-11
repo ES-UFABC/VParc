@@ -1,25 +1,35 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/userAuth";
 import styles from "../../styles/styleAdvertisementPage";
-import { Appbar, List, ActivityIndicator, Button } from "react-native-paper";
+import { Appbar, List, ActivityIndicator, Button, Menu, TextInput, Portal, Dialog, Paragraph } from "react-native-paper";
 import { View, Text, StyleSheet } from "react-native";
 import { getAdFromUser } from "../../services/advertisementService";
 import colors from "../../styles/colors";
 import AppLoading from 'expo-app-loading';
-
+import { deleteUser } from "../../services/userService";
 import { useFonts } from "@expo-google-fonts/nunito";
 import { 
     Nunito_200ExtraLight,
     Nunito_200ExtraLight_Italic,
     Nunito_300Light,
-    Nunito_800ExtraBold,
-  } from '@expo-google-fonts/nunito'
+    Nunito_800ExtraBold
+  } from '@expo-google-fonts/nunito';
+
+  
 const UserProfileComponent = ({navigation}) =>{
     const {user} = useAuth();
     const [expanded, setExpanded] = useState(false);
     const [loadAds, setLoadAds] = useState(false);
     const [advertisementList, setAdvertisementList] = useState([]);
-    
+    const [optionsVisible, setOptionsVisible] = useState(false);
+    const [deleteVisible, setDeleteVisible] = useState(false);
+    const [cellphone, setCellphone] = useState(user.cellphone);
+    const [update,setUpdate] = useState(false);
+
+    const openDelete = () => setDeleteVisible(true);
+    const closeDelete = () => setDeleteVisible(false);
+    const openOption = () => setOptionsVisible(true);
+    const closeOption = () => setOptionsVisible(false);
     const handlePress = async () => {
         setExpanded(!expanded);
     };
@@ -36,7 +46,6 @@ const UserProfileComponent = ({navigation}) =>{
 
 
     const loadAdsFromUser =  async () =>{
-        console.log("entrou pra carregar 2");
         await getAdFromUser(user.id).then(
             (ads)=>{
                 setAdvertisementList(ads);
@@ -44,7 +53,20 @@ const UserProfileComponent = ({navigation}) =>{
             }
         )
     }
-
+    const handleDelete = async () => {
+        await deleteUser(user)
+            .then(
+                (response)=>{
+                    setDeleteVisible(false);
+                    if(response.data.status === true){
+                        navigation.pop();
+                    }
+                }
+            )
+    }
+    const handleUpdate = async() =>{
+        console.log("Test");
+    }
     if(!loadAds){
         loadAdsFromUser();
     }
@@ -56,6 +78,10 @@ const UserProfileComponent = ({navigation}) =>{
             <Appbar.Header style={styles.appBar}>
                 <Appbar.Action icon='arrow-left' style={{flex:1, alignItems:'left'}} onPress={()=>navigation.pop()}/>
                 <Text style={styles.appBarTitleItem}>Meu Perfil</Text>
+                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' style={styles.appBarItem} onPress={()=>openOption()}/>}>
+                            <Menu.Item onPress={() => {openDelete(); closeOption()}} title="Deletar"/>
+                            <Menu.Item onPress={()=>{setUpdate(true); closeOption()}} title="Atualizar"/>
+                </Menu>
             </Appbar.Header>
             <View style={styleUser.primeiraParte}>
                 <View style={styleUser.drawImg}>
@@ -64,9 +90,22 @@ const UserProfileComponent = ({navigation}) =>{
                     <Text style={styleUser.userData}>Nome: {user.first_name} {user.last_name}</Text>
                     <Text style={styleUser.userData}>Email: {user.email}</Text>
                     <Text style={styleUser.userData}>RA: {user.ra}</Text>
-                    <Text style={styleUser.userData}>Celular: {user.cellphone}</Text>
+                    {!update ? 
+                        <Text style={styleUser.userData}>Celular: {user.cellphone}</Text> :
+                        <TextInput  style={styles.textInput} label="Celular" value={cellphone} onChangeText={(text)=>setCellphone(text)}></TextInput>
+                    }
                 </View>
             </View>
+            {update ? 
+            (
+                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                    <Button style={styles.buttonCancel} labelStyle={styles.textButtonUpdate} mode="contained" onPress={()=>{setUpdate(false)}}>Cancelar</Button>
+                    <Button style={styles.buttonUpdate} labelStyle={styles.textButtonUpdate} mode="contained" onPress={()=>handleUpdate()}>Salvar</Button>
+                </View>
+            ):
+                null
+            } 
+
             <View style={styleUser.oldAdSection}>
                 <List.Section title="">
                     <List.Accordion
@@ -97,6 +136,18 @@ const UserProfileComponent = ({navigation}) =>{
                     </List.Accordion>
                 </List.Section>
             </View>
+            <Portal>
+                <Dialog visible={deleteVisible} onDismiss={() => closeDelete()}>
+                    <Dialog.Title> ATENÇÃO </Dialog.Title>
+                    <Dialog.Content>
+                        <Paragraph>TEM CERTEZA QUE DESEJA DELETAR SEU USUÁRIO?</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button style={{textAlign:'left'}} onPress={() => closeDelete()}>NÃÃÃÃÃO</Button>
+                        <Button onPress={() => handleDelete()}>sim</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
         </View>
     );
 }
