@@ -171,8 +171,8 @@ const CreateAdvertisementComponent = ({navigation}) =>{
                                                 setBookCondition('usado'),
                                                 setBookState('second') 
                                               }}                                
-                            color = { colors.secundary }
-                            uncheckedColor = { colors.tertiary }
+                            color = { colors.primary }
+                            uncheckedColor = { colors.secundary }
                         />
                         <Text>
                             Usado
