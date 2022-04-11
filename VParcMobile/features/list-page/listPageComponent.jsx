@@ -70,8 +70,8 @@ const ListPageComponent = ({navigation}) => {
                 <Appbar.Action icon='refresh' onPress={() => setLoaded(false)}/>
                 {/* <Appbar.Action icon='account' onPress={() => handleLogout()}/> */}
                 <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='account'  onPress={()=>openOption()}/>}>
-                    <Menu.Item onPress={()=>handleLogout()} title="Deslogar"/>
-                    <Menu.Item onPress={()=>viewProfile()} title="Ver Perfil"/>
+                    <Menu.Item onPress={()=>{handleLogout(); closeOption()}} title="Deslogar"/>
+                    <Menu.Item onPress={()=>{viewProfile(); closeOption()}} title="Ver Perfil"/>
                     
                 </Menu>
             </Appbar.Header>

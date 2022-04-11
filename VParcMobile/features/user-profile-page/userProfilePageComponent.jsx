@@ -15,7 +15,7 @@ import {
     Nunito_800ExtraBold
   } from '@expo-google-fonts/nunito';
 
-  
+
 const UserProfileComponent = ({navigation}) =>{
     const {user} = useAuth();
     const [expanded, setExpanded] = useState(false);
@@ -35,9 +35,6 @@ const UserProfileComponent = ({navigation}) =>{
     };
 
     let [fontsLoaded] = useFonts({
-        Nunito_200ExtraLight,
-        Nunito_200ExtraLight_Italic,
-        Nunito_300Light,
         Nunito_800ExtraBold
       });
     if (!fontsLoaded) {
@@ -168,8 +165,5 @@ const styleUser = StyleSheet.create({
         flexDirection:'column',
         margin:'5px',
         fontFamily:'Nunito_800ExtraBold',
-    },
-    oldAdSection:{
-
     }
 })
