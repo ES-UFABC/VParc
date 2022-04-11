@@ -6,16 +6,18 @@ import { Nunito_200ExtraLight, Nunito_200ExtraLight_Italic, Nunito_300Light, Nun
 import { useFonts } from "@expo-google-fonts/nunito";
 import MenuButtonComponent from "../../components/menuButtonComponent";
 import logo from '../../assets/images/logoMaior.png';
-
+import AppLoading from 'expo-app-loading';
 const LandPageComponent = ({navigation}) => {
 
-    let [fontsloaded] = useFonts({
+    let [fontsLoaded] = useFonts({
         Nunito_200ExtraLight,
         Nunito_200ExtraLight_Italic,
         Nunito_300Light,
         Nunito_800ExtraBold
-      })
-   
+    })
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
 
     return (
             <View style={styles.container}>

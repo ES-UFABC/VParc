@@ -1,11 +1,29 @@
 require("dotenv").config();
 
 const crypto = require("crypto");
-const validator = require("validator");
 const jwt = require("jsonwebtoken");
 
 const UserRepository = require("../repositories/UserRepository");
 const UserValidator = require("../validators/UserValidator");
+
+const SignedURLService = require("../services/SignedURLService");
+const SendEmailService = require("../services/SendEmailService");
+
+async function sendActivationEmail(user) {
+
+    const url = `/api/user/activate?userId=${user._id}`;
+    const signedUrl = await SignedURLService.sign(url);
+
+    const email = {
+        to: user.email,
+        from: "Veteranos Parceiros <contato.vparc@gmail.com>",
+        subject: "Ativação de conta",
+        html: `<h3>Olá ${user.first_name},<br><h4>Para ativar sua conta, clique no link abaixo:</h4> <a href="http://localhost:3000${signedUrl}"> ATIVAR CONTA </a>`
+    }
+
+    SendEmailService.send(email);
+
+}
 class UserController {
 
     // (POST) /user
@@ -49,6 +67,8 @@ class UserController {
         const result = await UserRepository.create(user);
 
         if (result.status == true) {
+
+            sendActivationEmail(result.data.result);
 
             res.status(201); // created
             res.json({
@@ -104,6 +124,16 @@ class UserController {
 
         }
 
+        // check if the user is active
+        if (response.data.result[0].active == false) {
+            res.status(401); // unauthorized
+            res.json({
+                status: false,
+                message: "Usuário não está ativo, verifique seu e-mail para ativação."
+            });
+            return;
+        }
+
         // check email + password
         const user = response.data.result[0];
         const hash = generateHash(data.password, user.salt);
@@ -134,8 +164,97 @@ class UserController {
             status: true,
             message: "Logado com sucesso.",
             data: {
+                user: {
+                    id: user._id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    ra: user.ra,
+                    cellphone: user.cellphone,
+                    type: user.type,
+                    active: user.active
+                },
                 token
             }
+        });
+
+    }
+
+    // (GET) /user/activate?userId= &hash
+    async activate(req, res) {
+        
+        const url = req.originalUrl;
+        const userId = req.query.userId;
+
+        if (await SignedURLService.verify(url) == false) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Link inválido!"
+            });
+            return;
+        }
+
+        // activate the user
+        const user = {
+            id: userId,
+            active: true
+        }
+        const result = await UserRepository.update(user);
+
+        if (result.status == true) {                
+            res.status(200); // ok
+            res.json({
+                status: true,
+                message: "Conta ativada com sucesso!"
+            });
+        } else {
+            res.status(500); // internal server error
+            res.json({
+                status: false,
+                message: "Ocorreu uma falha interna!"
+            });
+        } 
+
+    }
+
+    async delete(req, res) {
+
+        const id = req.params.id;
+
+        if (!id) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "ID inválido!"
+            });
+            return;
+        }
+
+        if (req.userId != id && req.admin == false) {
+            res.status(401); // unauthorized
+            res.json({
+                status: false,
+                message: "Você não tem permissão para deletar este usuário!"
+            });
+            return;
+        }
+
+        const result = await UserRepository.deleteById(id);
+
+        if (result.status == false) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "ID não existe!"
+            });
+            return;
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Usuário deletado com sucesso!"
         });
 
     }

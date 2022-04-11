@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     description: {
         color: colors.grayMedium,
-        fontWeight: 'regular',
+        fontWeight: 'normal',
         fontSize: 16,
         fontFamily: 'Nunito_400Regular'
     },
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         width: "90%",
         fontFamily: 'Nunito_400Regular',
-        colors: colors.black,
+        color: colors.black,
         backgroundColor: colors.white
     },
     inputTextContainer: {

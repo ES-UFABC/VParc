@@ -10,17 +10,21 @@ import { ActivityIndicator, Snackbar, RadioButton } from "react-native-paper";
 import { getAllCategories } from "../../services/categories";
 import { createAdvertisement } from "../../services/advertisementService";
 import MenuButtonComponent from "../../components/menuButtonComponent";
+import AppLoading from 'expo-app-loading';
+import { useAuth } from "../../context/userAuth";
 
 const CreateAdvertisementComponent = ({navigation}) =>{
-
+    const {user} = useAuth();
     let categoriesList = [];
     let selectedCategoriesList = [];
-    const [title, setTitle] = useState();
-    const [description, setDescription] = useState();
-    const [price, setPrice] = useState();
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
     const [loaded, setLoaded] = useState(false);
     const [bookState, setBookState] = useState('first');
     const [bookCondition, setBookCondition] = useState('novo');
+    const [snackBarText, setSnackBarText] = useState('');
+    const [isSnackBarVisible, setIsSnackBarVisible] = useState(false);
     const [categories, setCategories] = useState({
         value: '',
         list: [],
@@ -63,15 +67,15 @@ const CreateAdvertisementComponent = ({navigation}) =>{
                                 categoriesList.push(categoryObj); 
                             }
                         )
-                        console.log(categoriesList);
                         setCategories({
                             ...categories,
                             list: categoriesList
                         })
-                    } 
+                    }
                     else {
-                        //Mostra snackbar
-                        // selectionlist.isuserEnabled = false
+                        setIsSnackBarVisible(true);
+                        setSnackBarText("Ops, não conseguimos carregar as categorias dos livros.");
+                        setTimeout(() => navigation.pop(), 10000);
                     }
                 }
             )
@@ -85,15 +89,25 @@ const CreateAdvertisementComponent = ({navigation}) =>{
             price: parseInt(price),
             bookCondition: bookCondition,
             categoryIds: categories.selectedList,
-            userId: "623f55f68808e77b14547d24" //Retirar userID
+            userId: user.id 
         }
-        console.log(registerObj);
-        await createAdvertisement(registerObj).then( (response) => {
-            if (response.status === true) {
-                console.log("Cadastrou");
-            }
+        return await createAdvertisement(registerObj)
+        .then( (response) => {
+                console.log(response);
+                if (response.status === true) {
+                    setIsSnackBarVisible(true);
+                    setSnackBarText("Anúncio criado com sucesso :)");
+                    setTimeout(() => navigation.pop(), 3000);
+                }
+                else {
+                    setIsSnackBarVisible(true);
+                    setSnackBarText("Algo deu errado, confira as informações preenchidas e tente novamente.");
+                }
         })
+        
     }
+
+    const onDismissSnackBar = () => setIsSnackBarVisible(false);
 
     useEffect(()=>{
         handleCategories();
@@ -104,7 +118,9 @@ const CreateAdvertisementComponent = ({navigation}) =>{
         Nunito_400Regular,
         Nunito_800ExtraBold,
     });
-
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
     return(
         <View style = { styles.container }>
 
@@ -176,18 +192,32 @@ const CreateAdvertisementComponent = ({navigation}) =>{
                         placeholder = "Categoria"
                         textInputMode="flat"
                         dialogTitleStyle={{ color: colors.black }}
-                        searchStyle={{ iconColor: colors.black,
-                                       backgroundColor: colors.grayMedium }}
+                        activeUnderlineColor = { colors.secundary }
+                        searchStyle={{ iconColor: colors.grayLight,
+                                       backgroundColor: colors.tertiary,
+                                       borderColor: colors.secundary }}
+                        textInputBackgroundColor = { colors.secundary }
                     />
                     <View style = { styles.spacerStyle } />
                     <MenuButtonComponent
                         titulo = "Criar anúncio"
-                        cor = { colors.secundary }
+                        cor = { colors.primary }
                         onPress = { () => handleRegister() }
                     />
 
                 </View>
             </ScrollView>
+
+            <Snackbar
+                visible = {isSnackBarVisible}
+                onDismiss = {onDismissSnackBar}
+                theme = {{colors: {accent: colors.register}}}
+                action = {{
+                    icon: "close",
+                    onPress: () => onDismissSnackBar
+                }}>
+                <Text>{ snackBarText }</Text>
+            </Snackbar>
 
         </View>
     );

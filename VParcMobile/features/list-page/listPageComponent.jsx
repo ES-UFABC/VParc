@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text,ScrollView } from "react-native";
-import { Appbar,  Searchbar, Drawer, Card, Title, Paragraph, Button, FAB, Portal } from "react-native-paper";
+import { Appbar,  Searchbar, Drawer, Card, Title, Paragraph, Button, FAB, Portal, Menu } from "react-native-paper";
 import colors from "../../styles/colors";
 import styles from "../../styles/styleListPage";
 import { useAuth } from "../../context/userAuth";
@@ -19,7 +19,7 @@ const AnuncioCardComponent = (props) =>{
                 <Paragraph style={{ color:colors.black}}>R$ {anuncio.price} </Paragraph>  
             </Card.Content>
             <Card.Actions>
-                <Button style={{alignItems:'right'}} onPress={()=>showAdPage()}>Ver detalhes</Button>
+                <Button  onPress={()=>showAdPage()}>Ver detalhes</Button>
             </Card.Actions>
         </Card> 
     );
@@ -28,32 +28,50 @@ const AnuncioCardComponent = (props) =>{
 const ListPageComponent = ({navigation}) => {
     
     const { logout } = useAuth();
-    
+    const [originalAdList, setOriginalAdList] = useState([]);
     const [advertisementList, setAdList] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    
+    const [optionsVisible, setOptions] = useState(false);
     const handleLogout = async ()=> { await logout();}
-
-    useEffect(()=>{
-        //carregar a lista de anuncios quando terminar de carregar a página
-        if(!loaded){
-            getAll().then(
-                (ads)=>{
-                    setAdList(ads);
-                    setLoaded(true);
-                }
-            )
-        }
-        
-    })
-
+    const viewProfile = () => {navigation.push('UserProfile')}
+    const loadAds = async() =>{
+        await getAll().then(
+            (ads)=>{
+                setAdList(ads);
+                setOriginalAdList(ads);
+                setLoaded(true);
+            }
+        )
+    }
+    const openOption = () =>{
+        setOptions(true);
+    }
+    const closeOption = () =>{
+        setOptions(false);
+    }
+    if(!loaded){
+        loadAds();
+    }
+    const filterAdvertisement = (text) =>{
+        let newAdList = [];
+        originalAdList.map((ad)=>{
+            if(ad.title.toLowerCase().includes(text.toLowerCase())){
+                newAdList.push(ad);
+            }   
+        })
+        setAdList(newAdList);
+    }
     return(
         <View>
             <Appbar.Header style={styles.appBar}>
-                <Searchbar placeholder="Pesquisar" style={styles.searchBar}/>
-                <Appbar.Action icon='filter' />
-                <Appbar.Action icon='account' onPress={() => handleLogout()}/>
+                <Searchbar placeholder="Pesquisar" onChangeText={(text)=>filterAdvertisement(text)} style={styles.searchBar}/>
                 <Appbar.Action icon='refresh' onPress={() => setLoaded(false)}/>
+                {/* <Appbar.Action icon='account' onPress={() => handleLogout()}/> */}
+                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='account'  onPress={()=>openOption()}/>}>
+                    <Menu.Item onPress={()=>{handleLogout(); closeOption()}} title="Deslogar"/>
+                    <Menu.Item onPress={()=>{viewProfile(); closeOption()}} title="Ver Perfil"/>
+                    
+                </Menu>
             </Appbar.Header>
             <ScrollView>
             {

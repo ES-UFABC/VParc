@@ -40,11 +40,9 @@ const styles = StyleSheet.create({
       color:'black',
       textAlign:"center",
       paddingRight:20,
-      placeholderTextColor:'white',
       backgroundColor:colors.tertiary,
       width:'90%',
       borderColor:colors.tertiary,
-      placeholderTextColor:'white',
       fontFamily:'Nunito_800ExtraBold',
     },
     forgot_btn:{

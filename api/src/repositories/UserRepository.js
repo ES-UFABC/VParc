@@ -25,11 +25,14 @@ class UserRepository {
 
         try {
 
-            await newUser.save();
+            const result = await newUser.save();
 
             return {
                 status: true,
-                message: "SUCCESS"
+                message: "SUCCESS",
+                data: {
+                    result
+                }
             };
 
         } catch (err) {

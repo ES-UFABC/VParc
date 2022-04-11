@@ -8,6 +8,7 @@ const getAll = async () =>{
         .then(
             (response)=>{
                 advertisements = response.data.data.result;
+                
             }
         )
         .catch(
@@ -15,15 +16,16 @@ const getAll = async () =>{
                 advertisements = error.response.data
             }
         )
+    
     return advertisements;
 }
 
 const createAdvertisement = async (advertisement) =>{
     let response = [{}];
-    axios.post(BASE_URL + '/advertisement', advertisement)
+    await axios.post(BASE_URL + '/advertisement', advertisement)
         .then(
             (responseApi)=>{
-                response = responseApi;
+                response = responseApi.data;
             }   
         )
         .catch(
@@ -69,4 +71,20 @@ const updateAdvertisement = async (advertisement)=>{
     return response;
 }
 
-export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement};
+const getAdFromUser = async(id) => {
+    let adsFromUser = [];
+    await getAll().then(
+        (advertisements)=>{
+            advertisements.map(
+                (ad)=>{
+                    if(ad.userId === id){
+                        adsFromUser.push(ad);
+                    }
+                }
+            )
+        }
+    )
+    return adsFromUser;
+}
+
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser};

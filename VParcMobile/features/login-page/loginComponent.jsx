@@ -14,7 +14,7 @@ import colors from "../../styles/colors";
 import InputFieldLogin from '../../components/inputFieldLogin';
 import logo from '../../assets/images/logoBranco.png';
 import {useAuth} from "../../context/userAuth";
-
+import AppLoading from 'expo-app-loading';
 
 const LoginComponent = ({navigation}) =>{
     const { signIn } = useAuth();
@@ -24,7 +24,7 @@ const LoginComponent = ({navigation}) =>{
     const [barVisible, setBarVisible] = useState(false);
     const [snackBarText,setSnackText] = useState('');
 
-    let response={};
+    
     const updateEmail = (email) =>{
       setEmail(email);
     }
@@ -36,28 +36,34 @@ const LoginComponent = ({navigation}) =>{
     const onDismissSnackBar = () => setBarVisible(false);
 
     const handleLogin = async () =>{
-      setLogin(true);
-      await signIn(email, senha).then((response)=>{
-        setSnackText(response.message);
-        setBarVisible(true);
-        setLogin(false);
-      });
+      if(!isLogin){
+        setLogin(true);
+        let response = await signIn(email, senha).then(
+          (res)=>{
+            console.log(res);
+          }
+        )
+        
+      }
+      
     }
 
     
 
-    let [fontsloaded] = useFonts({
+    let [fontsLoaded] = useFonts({
       Nunito_200ExtraLight,
       Nunito_200ExtraLight_Italic,
       Nunito_300Light,
       Nunito_800ExtraBold
     });
-
+    if (!fontsLoaded) {
+      return <AppLoading />;
+    }
     return(
         <View style={styles.container}>
             <StatusBar style="auto"/>
             {!isLogin ? (
-              <View style={{width:'100%', height:'80%',alignItems:'center'}}>
+              <View style={{width:'100%', height:'100%',alignItems:'center'}}>
                 
                 <View styles={{alignItems:'center'}}>
                   <Text style={styles.titulo}>VParc</Text>
@@ -82,7 +88,7 @@ const LoginComponent = ({navigation}) =>{
                       />
                 </View>  
                 </View>
-                <View style={{width:'100%', alignItems:'center', marginTop:'20%'}}>                  
+                <View style={{width:'100%', alignItems:'center', marginTop:'1%'}}>                  
                   <TouchableOpacity style={styles.loginBtn} onPress={()=>handleLogin()}>
                       <Text style={styles.loginTxt} >LOGIN</Text>
                   </TouchableOpacity>

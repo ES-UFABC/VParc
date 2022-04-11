@@ -1,8 +1,97 @@
+const fs = require("fs");
+
 const AdvertisementRepository = require("../repositories/AdvertisementRepository");
 
 const AdvertisementValidator = require("../validators/AdvertisementValidator");
 
+const CloudinaryService = require("../services/CloudinaryService");
+
+async function deleteImage(path) {
+
+    fs.unlink(path, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+}
+
 class AdvertisementController {
+
+    // (POST) /advertisement/image?id=:id
+    async uploadImage(req, res) {
+
+        const image = req.file;
+        const id = req.query.id;
+
+        if (image == undefined || image == null) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Nenhuma imagem foi fornecida."
+            });
+            return;
+        }
+
+        if (id == undefined || id == null) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "O id do anúncio não foi fornecido."
+            });
+            deleteImage(image.path);
+            return;
+        }
+
+        if (await AdvertisementValidator.validateOwnership(id, req.userId, req.admin) == false) {
+            res.status(403); // forbidden
+            res.json({
+                status: false,
+                message: "Você não tem permissão para alterar a imagem deste anúncio."
+            });
+            deleteImage(image.path);
+            return;
+        }
+
+        const imageResult = await CloudinaryService.upload(image.path);
+
+        if (imageResult.status == false) {
+            res.status(500); // internal server error
+            res.json({
+                status: false,
+                message: imageResult.message
+            });
+            deleteImage(image.path);
+            return;
+        }
+
+        // update the advertisement
+        const advertisement = {
+            imageUrl: imageResult.data.url
+        }
+
+        const result = await AdvertisementRepository.updateById(id, advertisement);
+
+        if (result.status == false) {
+
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Anúncio não existe."
+            });
+            deleteImage(image.path);
+            return;
+
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Anúncio atualizado." 
+        });
+        deleteImage(image.path);
+
+    }
 
     // (POST) /advertisement
     async create(req, res) {
