@@ -1,12 +1,13 @@
 import React, { useState} from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import {Appbar, Menu, Button, Dialog, Portal, Paragraph, TextInput, RadioButton} from 'react-native-paper'
 import colors from "../../styles/colors";
 import { 
     Nunito_200ExtraLight,
     Nunito_200ExtraLight_Italic,
     Nunito_300Light,
-    Nunito_800ExtraBold,
+    Nunito_400Regular,
+    Nunito_700Bold,
   } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
 import { deleteAdvertisement, updateAdvertisement } from "../../services/advertisementService";
@@ -24,6 +25,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
     const [price, setPrice] = useState('');
     const [bookCondition, setBookCondition] = useState('');
     const [title, setTitle] = useState('');
+    const [image, setImageUrl] = useState('');
     const openDelete = () => setDeleteVisible(true);
     const closeDelete = () => setDeleteVisible(false);
     const openOption = () => setOptionsVisible(true);
@@ -34,13 +36,15 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
         setPrice(anuncio.price);
         setBookCondition(anuncio.bookCondition);
         setTitle(anuncio.title);
+        setImageUrl(anuncio.imageUrl);
         setLoaded(true);
     }
     let [fontsLoaded] = useFonts({
         Nunito_200ExtraLight,
         Nunito_200ExtraLight_Italic,
         Nunito_300Light,
-        Nunito_800ExtraBold
+        Nunito_400Regular,
+        Nunito_700Bold
       });
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -84,24 +88,41 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
 
 
     return(
-        <View style={{flex:1}}>
+        <View style = { styles.container }>
             <Appbar.Header style={styles.appBar}>
                 <Appbar.Action icon='arrow-left' style={{flex:1, alignItems:'left'}} onPress={()=>navigation.pop()}/>
                 <Text style={styles.appBarTitleItem}>{anuncio.title}</Text>
-                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' style={styles.appBarItem} onPress={()=>openOption()}/>}>
-                    <Menu.Item onPress={() => openDelete()} title="Deletar"/>
-                    <Menu.Item onPress={()=>{setUpdate(true)}} title="Atualizar"/>
+                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' color = { colors.white } style={styles.appBarItem} onPress={()=>openOption()}/>}>
+                    <Menu.Item onPress={() => {openDelete(), setOptionsVisible(false)}} title="Deletar"/>
+                    <Menu.Item onPress={()=>{setUpdate(true), setOptionsVisible(false)}} title="Atualizar"/>
                 </Menu>
             </Appbar.Header>
-            
-            <View style={{backgroundColor:colors.grayMedium}}>
-                <Text style={{textAlign:'center'}}>IMAGEM</Text>
+
+            <View>
+                <View style={styles.spacerStyle}></View>
+                { (image === undefined) ?
+                    <Text style={styles.tituloTag}>Anúncio sem imagem :(</Text>
+                    :
+                    <Image
+                    style = { styles.image }
+                    source = { { uri: image } }
+                    />
+                } 
             </View>
             <View style={styles.itemTag}>
                 <Text style={styles.tituloTag}>Título</Text>
                 
                 {update ? 
-                    (<TextInput style={styles.textInput} label='Descrição' value={title} onChangeText={(text)=>setTitle(text)}/>)
+                    (<TextInput style={styles.textInput} 
+                        label='Título' 
+                        value={title} 
+                        outlineColor = { colors.white }
+                        activeOutlineColor = { colors.tertiary }
+                        mode = "outlined"
+                        placeholderTextColor = { colors.grayMedium }
+                        theme = { { colors: { text: colors.grayMedium } } } 
+                        onChangeText={(text)=>setTitle(text)}/>
+                    )
                     :
                     (<Text style={styles.textoTag}>{anuncio.title}</Text>)
                 }
@@ -110,7 +131,16 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 <Text style={styles.tituloTag}>Descrição</Text>
                 
                 {update ? 
-                    (<TextInput style={styles.textInput} label='Descrição' value={description} onChangeText={(text)=>setDescription(text)}/>)
+                    (<TextInput style={styles.textInput}
+                        label='Descrição'
+                        value={description} 
+                        outlineColor = { colors.white }
+                        activeOutlineColor = { colors.tertiary }
+                        mode = "outlined"
+                        placeholderTextColor = { colors.grayMedium }
+                        theme = { { colors: { text: colors.grayMedium } } } 
+                        onChangeText={(text)=>setDescription(text)}/>
+                        )
                     :
                     (<Text style={styles.textoTag}>{anuncio.description}</Text>)
                 }
@@ -119,7 +149,17 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 <Text style={styles.tituloTag}>Preço</Text>
                 
                 {update ? 
-                    (<TextInput style={styles.textInput} keyboardType='number-pad' label='Preço' value={price} onChangeText={(price)=>setPrice(price)}/>)
+                    (<TextInput style={styles.textInput} 
+                        keyboardType='number-pad'
+                        label='Preço' 
+                        value={price} 
+                        outlineColor = { colors.white }
+                        activeOutlineColor = { colors.tertiary }
+                        mode = "outlined"
+                        placeholderTextColor = { colors.grayMedium }
+                        theme = { { colors: { text: colors.grayMedium } } } 
+                        onChangeText={(price)=>setPrice(price)}/>
+                    )
                     :
                     (<Text style={styles.textoTag}>R${anuncio.price}</Text>)
                 }
@@ -130,21 +170,21 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 {update ? 
                 (
                 <View >
-                    <View style={{flexDirection:'row'}}>
+                    <View style={styles.textTag}>
                         <Text style={styles.bookConditionTag}>Novo</Text>
                         <RadioButton 
-                            color={colors.primary}
-                            uncheckedColor={colors.secundary}
+                            color = { colors.primary }
+                            uncheckedColor = { colors.secundary }
                             value='novo' 
                             status={bookCondition === 'novo' ? 'checked' : 'unchecked'}
                             onPress={()=>setBookCondition('novo')}
                         />
                     </View>
-                    <View style={{flexDirection:'row'}}>
+                    <View style={styles.textTag}>
                         <Text style={styles.bookConditionTag}>Usado</Text>
                         <RadioButton 
-                            color={colors.primary}
-                            uncheckedColor={colors.secundary}
+                            color = { colors.primary }
+                            uncheckedColor = { colors.secundary }
                             value='usado' 
                             status={bookCondition === 'usado' ? 'checked' : 'unchecked'}
                             onPress={()=>setBookCondition('usado')}
@@ -159,7 +199,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
 
             {update ? 
             (
-                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', marginTop:'5%'}}>
                     <Button style={styles.buttonCancel} labelStyle={styles.textButtonUpdate} mode="contained" onPress={()=>{setUpdate(false)}}>Cancelar</Button>
                     <Button style={styles.buttonUpdate} labelStyle={styles.textButtonUpdate} mode="contained" onPress={()=>handleUpdate()}>Salvar</Button>
                 </View>
@@ -180,7 +220,6 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
-
 
         </View>
     )
