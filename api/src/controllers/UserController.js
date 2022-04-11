@@ -218,6 +218,47 @@ class UserController {
 
     }
 
+    async delete(req, res) {
+
+        const id = req.params.id;
+
+        if (!id) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "ID inválido!"
+            });
+            return;
+        }
+
+        if (req.userId != id && req.admin == false) {
+            res.status(401); // unauthorized
+            res.json({
+                status: false,
+                message: "Você não tem permissão para deletar este usuário!"
+            });
+            return;
+        }
+
+        const result = await UserRepository.deleteById(id);
+
+        if (result.status == false) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "ID não existe!"
+            });
+            return;
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Usuário deletado com sucesso!"
+        });
+
+    }
+
 }
 
 function generateSalt() {
