@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     image: {
         padding: '30%',
         width: '100%',
+        resizeMode: "contain"
     },
     spacerStyle: {
         paddingTop: 20,
