@@ -33,11 +33,12 @@ const ListPageComponent = ({navigation}) => {
     const [loaded, setLoaded] = useState(false);
     const [optionsVisible, setOptions] = useState(false);
     const handleLogout = async ()=> { await logout();}
-    const viewProfile = () => {navigation.push('Profile')}
+    const viewProfile = () => {navigation.push('UserProfile')}
     const loadAds = async() =>{
         await getAll().then(
             (ads)=>{
                 setAdList(ads);
+                console.log(ads);
                 setOriginalAdList(ads);
                 setLoaded(true);
             }

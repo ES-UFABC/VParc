@@ -71,4 +71,20 @@ const updateAdvertisement = async (advertisement)=>{
     return response;
 }
 
-export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement};
+const getAdFromUser = async(id) => {
+    let adsFromUser = [];
+    await getAll().then(
+        (advertisements)=>{
+            advertisements.map(
+                (ad)=>{
+                    if(ad.userId === id){
+                        adsFromUser.push(ad);
+                    }
+                }
+            )
+        }
+    )
+    return adsFromUser;
+}
+
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser};
