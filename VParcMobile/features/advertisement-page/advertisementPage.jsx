@@ -180,7 +180,6 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 (
                 <View >
                     <View style={styles.textTag}>
-                        <Text style={styles.bookConditionTag}>Novo</Text>
                         <RadioButton 
                             color = { colors.primary }
                             uncheckedColor = { colors.secundary }
@@ -188,9 +187,9 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                             status={bookCondition === 'novo' ? 'checked' : 'unchecked'}
                             onPress={()=>setBookCondition('novo')}
                         />
+                        <Text style={styles.bookConditionTag}>Novo</Text>
                     </View>
                     <View style={styles.textTag}>
-                        <Text style={styles.bookConditionTag}>Usado</Text>
                         <RadioButton 
                             color = { colors.primary }
                             uncheckedColor = { colors.secundary }
@@ -198,6 +197,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                             status={bookCondition === 'usado' ? 'checked' : 'unchecked'}
                             onPress={()=>setBookCondition('usado')}
                         />
+                        <Text style={styles.bookConditionTag}>Usado</Text>
                     </View>
                 </View>
                 )

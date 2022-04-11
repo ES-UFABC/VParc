@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         backgroundColor:colors.primary,
         color:colors.primary,
         flexDirection:'row',
+        alignContent: 'flex-start',
     },
     appBarItem:{
         flex:1
