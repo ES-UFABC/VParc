@@ -13,8 +13,9 @@ import { useFonts } from "@expo-google-fonts/nunito";
 import { deleteAdvertisement, updateAdvertisement } from "../../services/advertisementService";
 import styles from "../../styles/styleAdvertisementPage";
 import AppLoading from 'expo-app-loading';
+import { useAuth } from "../../context/userAuth";
 const AdvertisementPageComponent = ({route, navigation}) =>{
-
+    const {user} = useAuth();
     const anuncio = route.params;
 
     const [loaded, setLoaded] = useState(false);
@@ -26,6 +27,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
     const [bookCondition, setBookCondition] = useState('');
     const [title, setTitle] = useState('');
     const [image, setImageUrl] = useState('');
+    const [isOwner, setOwner] = useState(false);
     const openDelete = () => setDeleteVisible(true);
     const closeDelete = () => setDeleteVisible(false);
     const openOption = () => setOptionsVisible(true);
@@ -38,6 +40,9 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
         setTitle(anuncio.title);
         setImageUrl(anuncio.imageUrl);
         setLoaded(true);
+        if(user.id === anuncio.userId){
+            setOwner(true);
+        }
     }
     let [fontsLoaded] = useFonts({
         Nunito_200ExtraLight,
@@ -92,10 +97,14 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
             <Appbar.Header style={styles.appBar}>
                 <Appbar.Action icon='arrow-left' style={{flex:1, alignItems:'left'}} onPress={()=>navigation.pop()}/>
                 <Text style={styles.appBarTitleItem}>{anuncio.title}</Text>
-                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' color = { colors.white } style={styles.appBarItem} onPress={()=>openOption()}/>}>
-                    <Menu.Item onPress={() => {openDelete(), setOptionsVisible(false)}} title="Deletar"/>
-                    <Menu.Item onPress={()=>{setUpdate(true), setOptionsVisible(false)}} title="Atualizar"/>
-                </Menu>
+                {isOwner ? 
+                    <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' color = { colors.white } style={styles.appBarItem} onPress={()=>openOption()}/>}>
+                        <Menu.Item onPress={() => {openDelete(), setOptionsVisible(false)}} title="Deletar"/>
+                        <Menu.Item onPress={()=>{setUpdate(true), setOptionsVisible(false)}} title="Atualizar"/>
+                    </Menu>
+                    :
+                    null
+                }
             </Appbar.Header>
 
             <View>
