@@ -26,6 +26,12 @@ const register =  async (user) =>{
     return response;
 }
 
+const deleteUser = async(user) =>{
+    let response;
 
+    await axios.delete(BASE_URL + '/user',user)
+                .then((responseAPI) => response = responseAPI.data)
+                .catch((error) => response = error.response.data);
+}
 
-export  {login, register};
+export  {login, register, deleteUser};
