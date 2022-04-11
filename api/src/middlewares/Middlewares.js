@@ -44,7 +44,7 @@ class Middlewares {
         }
 
         const token = authToken.split(" ")[1];
-        
+        console.log(authToken);
         jwt.verify(authToken, process.env.JWT_SECRET, (err, decoded) => {
 
             if (err) {
