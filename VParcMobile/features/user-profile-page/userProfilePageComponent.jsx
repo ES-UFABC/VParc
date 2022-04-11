@@ -12,6 +12,8 @@ import {
     Nunito_200ExtraLight,
     Nunito_200ExtraLight_Italic,
     Nunito_300Light,
+    Nunito_400Regular,
+    Nunito_700Bold,
     Nunito_800ExtraBold
   } from '@expo-google-fonts/nunito';
 
@@ -35,6 +37,8 @@ const UserProfileComponent = ({navigation}) =>{
     };
 
     let [fontsLoaded] = useFonts({
+        Nunito_400Regular,
+        Nunito_700Bold,
         Nunito_800ExtraBold
       });
     if (!fontsLoaded) {
@@ -75,7 +79,7 @@ const UserProfileComponent = ({navigation}) =>{
             <Appbar.Header style={styles.appBar}>
                 <Appbar.Action icon='arrow-left' style={{flex:1, alignItems:'left'}} onPress={()=>navigation.pop()}/>
                 <Text style={styles.appBarTitleItem}>Meu Perfil</Text>
-                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' style={styles.appBarItem} onPress={()=>openOption()}/>}>
+                <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='dots-vertical' color = { colors.white } style={styles.appBarItem} onPress={()=>openOption()}/>}>
                             <Menu.Item onPress={() => {openDelete(); closeOption()}} title="Deletar"/>
                             <Menu.Item onPress={()=>{setUpdate(true); closeOption()}} title="Atualizar"/>
                 </Menu>

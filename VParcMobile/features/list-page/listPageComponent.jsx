@@ -38,7 +38,6 @@ const ListPageComponent = ({navigation}) => {
         await getAll().then(
             (ads)=>{
                 setAdList(ads);
-                console.log(ads);
                 setOriginalAdList(ads);
                 setLoaded(true);
             }
@@ -66,7 +65,6 @@ const ListPageComponent = ({navigation}) => {
         <View>
             <Appbar.Header style={styles.appBar}>
                 <Searchbar placeholder="Pesquisar" onChangeText={(text)=>filterAdvertisement(text)} style={styles.searchBar}/>
-                <Appbar.Action icon='filter' />
                 <Appbar.Action icon='refresh' onPress={() => setLoaded(false)}/>
                 {/* <Appbar.Action icon='account' onPress={() => handleLogout()}/> */}
                 <Menu visible={optionsVisible} onDismiss={closeOption} anchor={<Appbar.Action icon='account'  onPress={()=>openOption()}/>}>
