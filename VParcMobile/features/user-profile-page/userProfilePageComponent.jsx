@@ -110,7 +110,7 @@ const UserProfileComponent = ({navigation}) =>{
             <View style={styleUser.oldAdSection}>
                 <List.Section title="">
                     <List.Accordion
-                        title="Seus anúncios"
+                        title="Meus anúncios"
                         titleStyle={{fontFamily:'Nunito_800ExtraBold'}}
                         expanded={expanded}
                         onPress={() => handlePress()}
