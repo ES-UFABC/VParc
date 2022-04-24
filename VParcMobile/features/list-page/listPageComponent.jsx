@@ -26,7 +26,9 @@ const AnuncioCardComponent = (props) =>{
         <Card style={{backgroundColor:colors.white, marginStart: '2%', marginEnd: '2%', marginTop: '2%'}}>
             <Card.Title title={anuncio.title} style={{ color: colors.white, backgroundColor: colors.secundary, marginBottom: '2%'}}/>
             <Card.Content>
-                <Paragraph style={{ color:colors.black}}>R$ {anuncio.price} </Paragraph>  
+                {anuncio.price !== 0 ? <Paragraph style={{ color:colors.black}}>R$ {anuncio.price} </Paragraph> : 
+                <Paragraph style={{ color:colors.black}}>Doação </Paragraph>
+                }
             </Card.Content>
             <Card.Actions>
                 <Button  onPress={()=>showAdPage()}>Ver detalhes</Button>

@@ -86,5 +86,37 @@ const getAdFromUser = async(id) => {
     )
     return adsFromUser;
 }
+const dataUrlToFile = async (dataUrl, fileName) => {
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+    return blob;
+}
 
-export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser};
+const convertToFile = async(dataUri, id) =>{
+    let filename = dataUri.split('/').pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? 'image/${match[1]}':'image';
+    let formData = new FormData();
+    formData.append('image', {uri:dataUri, name:filename, type:type});
+    return formData;
+}
+
+const uploadImage = async(id, image)=>{
+    //const file = await dataUrlToFile(image, id);
+    //console.log(file);
+    //const imageBody = new FormData();
+    //imageBody.append('image', file);
+    console.log(id);
+    const reqBody = await convertToFile(image, id);
+    console.log(reqBody);
+    const imgBody = {img:image}
+    axios.post(BASE_URL + '/advertisement/image?id='+id,imgBody,{
+    }).then(res=>{
+        console.log(res);
+    }).catch(err=>{
+        console.log(err.response);
+    });
+
+}
+
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage};

@@ -38,14 +38,17 @@ const LoginComponent = ({navigation}) =>{
     const handleLogin = async () =>{
       if(!isLogin){
         setLogin(true);
-        let response = await signIn(email, senha).then(
-          (res)=>{
-            console.log(res);
+        await signIn(email, senha).then(
+          (response)=>{
+            if(response.status !== true){
+              setLogin(false);
+              setSnackText(response.message);
+              setBarVisible(true);
+            }
           }
-        )
+        );
         
       }
-      
     }
 
     
