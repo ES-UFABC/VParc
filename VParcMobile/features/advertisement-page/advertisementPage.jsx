@@ -158,7 +158,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     source = { { uri: image } }
                     />
                 } 
-                {isOwner ? <Button onPress={()=>addImage()}>Adicionar imagem (max 5MB)</Button> : null}
+                {isOwner && (image === undefined || image === '') ? <Button onPress={()=>addImage()}>Adicionar imagem (max 5MB)</Button> : null}
             </View>
             <View style={styles.itemTag}>
                 <Text style={styles.tituloTag}>Título</Text>
