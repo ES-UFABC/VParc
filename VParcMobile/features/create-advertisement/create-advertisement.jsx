@@ -6,20 +6,20 @@ import styles from "../../styles/styleCreateAdvertisement";
 import colors from "../../styles/colors";
 import InputFieldRegistration from "../../components/inputFieldRegistration";
 import { PaperSelect } from 'react-native-paper-select';
-import { ActivityIndicator, Snackbar, RadioButton } from "react-native-paper";
+import { ActivityIndicator, Snackbar, RadioButton, Switch } from "react-native-paper";
 import { getAllCategories } from "../../services/categories";
 import { createAdvertisement } from "../../services/advertisementService";
 import MenuButtonComponent from "../../components/menuButtonComponent";
 import AppLoading from 'expo-app-loading';
 import { useAuth } from "../../context/userAuth";
-
+import SwitchSelector from "react-native-switch-selector";
 const CreateAdvertisementComponent = ({navigation}) =>{
     const {user} = useAuth();
     let categoriesList = [];
     let selectedCategoriesList = [];
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState('0');
     const [loaded, setLoaded] = useState(false);
     const [bookState, setBookState] = useState('first');
     const [bookCondition, setBookCondition] = useState('novo');
@@ -31,6 +31,7 @@ const CreateAdvertisementComponent = ({navigation}) =>{
         selectedList: [],
         error: '',
     });
+    const [isDonation, setDonation] = useState(false);
 
     const updateTitle = (title) =>{
         setTitle(title);
@@ -106,9 +107,13 @@ const CreateAdvertisementComponent = ({navigation}) =>{
         })
         
     }
+    const changeToDonation = () =>{
+        setDonation(true);
+        setPrice('0');
+    }
 
     const onDismissSnackBar = () => setIsSnackBarVisible(false);
-
+    const toggleDonation = () => setDonation(!isDonation);
     useEffect(()=>{
         handleCategories();
     })
@@ -123,9 +128,25 @@ const CreateAdvertisementComponent = ({navigation}) =>{
     }
     return(
         <View style = { styles.container }>
-
+            <SwitchSelector 
+                style={{marginTop:20}}
+                initial ={0}
+                onPress={(value) => value == 0 ? setDonation(false) : changeToDonation()}
+                options={
+                    [   
+                        {label:"VENDA", value:0},
+                        {label:"DOAÇÃO", value:1}
+                        
+                    ]
+                }
+                textColor={colors.primary}
+                selectedColor={colors.white}
+                backgroundColor={colors.white}
+                buttonColor={colors.primary}
+            />
             <ScrollView>
                 <View style = { styles.textContainer} >
+                    
                     <InputFieldRegistration 
                         value = {title}
                         placeholder = "Título"
@@ -138,11 +159,17 @@ const CreateAdvertisementComponent = ({navigation}) =>{
                         onChangeText = { (description) => updateDescription(description) }
                     />
                     <View style = { styles.spacerStyle } />
+                    
+                        
+                    {!isDonation ?
                     <InputFieldRegistration 
+                        editable={!isDonation}
                         value = {price}
                         placeholder = "Preço"
                         onChangeText = { (price) => updatePrice(price) }
-                    />
+                    /> : null
+                    }
+                    
                     <View style = { styles.spacerStyle } />
                     <Text style = { styles.description }>
                         Condição do Livro
