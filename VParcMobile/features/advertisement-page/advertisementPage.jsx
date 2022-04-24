@@ -10,10 +10,12 @@ import {
     Nunito_700Bold,
   } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
-import { deleteAdvertisement, updateAdvertisement } from "../../services/advertisementService";
+import { deleteAdvertisement, updateAdvertisement, uploadImage } from "../../services/advertisementService";
 import styles from "../../styles/styleAdvertisementPage";
 import AppLoading from 'expo-app-loading';
 import { useAuth } from "../../context/userAuth";
+import * as ImagePicker from 'expo-image-picker';
+
 const AdvertisementPageComponent = ({route, navigation}) =>{
     const {user} = useAuth();
     const anuncio = route.params;
@@ -28,11 +30,13 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
     const [title, setTitle] = useState('');
     const [image, setImageUrl] = useState('');
     const [isOwner, setOwner] = useState(false);
+    const [imageFile, setImageFile] = useState('');
+    const [uploading, setUploading] = useState(false);
     const openDelete = () => setDeleteVisible(true);
     const closeDelete = () => setDeleteVisible(false);
     const openOption = () => setOptionsVisible(true);
     const closeOption = () => setOptionsVisible(false);
-
+    
     if(!loaded){
         setDescription(anuncio.description);
         setPrice(anuncio.price);
@@ -90,6 +94,43 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 }
             )
     }
+    const upload = async (image) =>{
+        if(image !== ''){
+            //faz chamada para importar image;
+            console.log(anuncio._id);
+            //console.log(image);
+            let id = anuncio._id
+            await uploadImage(id, image);
+        }
+    }
+    const addImage = async () => {
+        if(!uploading){
+            setUploading(true);
+            try{
+                let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (permissionResult.granted === false) {
+                alert('Permission to access camera roll is required!');
+                return;
+                }
+            
+                let pickerResult = await ImagePicker.launchImageLibraryAsync({base64:true});
+                if(pickerResult.cancelled === true){
+                    return;
+                }else{
+                    let image = pickerResult.uri;
+                    
+                    await upload(image);
+                }
+                
+                
+            }catch(err){
+                console.log(err);
+            }
+            setUploading(false);
+        }
+        
+    }
+    
 
 
     return(
@@ -117,6 +158,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     source = { { uri: image } }
                     />
                 } 
+                {isOwner ? <Button onPress={()=>addImage()}>Adicionar imagem</Button> : null}
             </View>
             <View style={styles.itemTag}>
                 <Text style={styles.tituloTag}>Título</Text>
