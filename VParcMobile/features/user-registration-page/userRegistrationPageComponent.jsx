@@ -7,14 +7,10 @@ import colors from "../../styles/colors";
 import InputFieldRegistration from "../../components/inputFieldRegistration";
 import MenuButtonComponent from "../../components/menuButtonComponent";
 import { useAuth } from "../../context/userAuth";
-import {ActivityIndicator, Snackbar} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
 const UserRegistrationComponent = ({navigation}) => {
     const {signUp} = useAuth();
-
-    const [barVisible, setBarVisible] = useState(false);
-    const [snackBarText,setSnackText] = useState('');
-    const onDismissSnackBar = () => setBarVisible(false);
 
     const [isRegistering, setRegistering] = useState(false);
     const [userName, setUserName] = useState('');
@@ -35,10 +31,9 @@ const UserRegistrationComponent = ({navigation}) => {
             password:userPassword
         }
         await signUp(registerObj).then((response)=>{
-                setBarVisible(true);
-                setSnackText(response.message);
                 if(response.status === true){
-                    setTimeout(()=>navigation.pop(),2000);
+                    setTimeout(()=>navigation.push("UserRegistrationSuccess"));
+                    setRegistering(false);
                 }else{
                     setRegistering(false);
                 }
@@ -154,13 +149,6 @@ const UserRegistrationComponent = ({navigation}) => {
                 </>):
                     (<ActivityIndicator size='large' animating={true} color={colors.primary} />)
             }
-
-                <Snackbar visible={barVisible} 
-                        onDismiss={onDismissSnackBar} 
-                        action={{label:'OK',onPress:()=>onDismissSnackBar}}
-                >
-                <Text>{snackBarText}</Text>
-                </Snackbar>
             
         </ScrollView>
     );
