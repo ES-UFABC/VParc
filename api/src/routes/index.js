@@ -19,6 +19,7 @@ router.post("/user", UserController.create);
 router.get("/user/activate", UserController.activate);
 router.post("/login", UserController.login);
 router.delete("/user/:id", Middlewares.loggedUser, UserController.delete);
+router.put("/user/:id", UserController.update);
 
 // Category Routes
 router.get("/category", CategoryController.findAll);

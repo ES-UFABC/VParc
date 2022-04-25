@@ -16,7 +16,6 @@ const getAll = async () =>{
                 advertisements = error.response.data
             }
         )
-    
     return advertisements;
 }
 
@@ -67,7 +66,6 @@ const updateAdvertisement = async (advertisement)=>{
                 response = error.response.data;
             }
         )
-    console.log(response);
     return response;
 }
 
@@ -86,37 +84,27 @@ const getAdFromUser = async(id) => {
     )
     return adsFromUser;
 }
-const dataUrlToFile = async (dataUrl, fileName) => {
-    const res = await fetch(dataUrl);
-    const blob = await res.blob();
-    return blob;
-}
-
-const convertToFile = async(dataUri, id) =>{
-    let filename = dataUri.split('/').pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? 'image/${match[1]}':'image';
-    let formData = new FormData();
-    formData.append('image', {uri:dataUri, name:filename, type:type});
-    return formData;
+const getAdvertisement = async(id) =>{
+    let response;
+    await axios.get(BASE_URL+'/advertisement/'+id).then(
+        (res) =>{
+            response=res;
+        }
+    ).catch(err => console.log(err));
+    return response.data.data.result[0];
 }
 
 const uploadImage = async(id, image)=>{
-    //const file = await dataUrlToFile(image, id);
-    //console.log(file);
-    //const imageBody = new FormData();
-    //imageBody.append('image', file);
-    console.log(id);
-    const reqBody = await convertToFile(image, id);
-    console.log(reqBody);
-    const imgBody = {img:image}
-    axios.post(BASE_URL + '/advertisement/image?id='+id,imgBody,{
+    let response;
+    const imgBody = new FormData();
+    imgBody.append("image", image.file);
+    await axios.post(BASE_URL + '/advertisement/image?id='+id,imgBody,{
     }).then(res=>{
-        console.log(res);
+        response =res;
     }).catch(err=>{
         console.log(err.response);
     });
-
+    return response;
 }
 
-export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage};
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage, getAdvertisement};
