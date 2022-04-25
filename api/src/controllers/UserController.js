@@ -218,6 +218,36 @@ class UserController {
 
     }
 
+    async update(req, res){
+        const id = req.params.id;
+        const data = req.body;
+        if (!id) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "ID inválido!"
+            });
+            return;
+        }
+
+        const result = await UserRepository.update(data);
+
+        if (result.status == false) {
+            res.status(400); // bad request
+            res.json({
+                status: false,
+                message: "Erro ao atualizar!"
+            });
+            return;
+        }
+
+        res.status(200); // ok
+        res.json({
+            status: true,
+            message: "Usuário atualizado com sucesso!"
+        });
+    }
+
     async delete(req, res) {
 
         const id = req.params.id;

@@ -34,4 +34,16 @@ const deleteUser = async(user) =>{
                 .catch((error) => response = error.response.data);
 }
 
-export  {login, register, deleteUser};
+const updateUser = async(user) =>{
+    let response;
+    await axios.put(BASE_URL + '/user/' + user._id, user)
+                .then((res)=>{
+                    response = res;
+                })
+                .catch(error => {
+                    response = error;
+                });
+    return response;
+}
+
+export  {login, register, deleteUser, updateUser};
