@@ -121,12 +121,11 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
         if(!uploading){
             setUploading(true);
             try{
-                // let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                // if (permissionResult.granted === false) {
-                // alert('Permission to access camera roll is required!');
-                // return;
-                // }
-            
+                let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (permissionResult.granted === false) {
+                    alert('Permissão para acessar camera é necessária!');
+                    return;
+                }
                 let pickerResult = await DocumentPicker.getDocumentAsync();
                 console.log(pickerResult);
                 if(pickerResult.cancelled === true){
