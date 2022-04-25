@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { View, Text, Image } from "react-native";
-import {Appbar, Menu, Button, Dialog, Portal, Paragraph, TextInput, RadioButton} from 'react-native-paper'
+import {Appbar, Menu, Button, Dialog, Portal, Paragraph, TextInput, RadioButton, Snackbar} from 'react-native-paper'
 import colors from "../../styles/colors";
 import { 
     Nunito_200ExtraLight,
@@ -10,11 +10,12 @@ import {
     Nunito_700Bold,
   } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
-import { deleteAdvertisement, updateAdvertisement, uploadImage } from "../../services/advertisementService";
+import { deleteAdvertisement, updateAdvertisement, uploadImage, getAdvertisement } from "../../services/advertisementService";
 import styles from "../../styles/styleAdvertisementPage";
 import AppLoading from 'expo-app-loading';
 import { useAuth } from "../../context/userAuth";
 import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 
 const AdvertisementPageComponent = ({route, navigation}) =>{
     const {user} = useAuth();
@@ -32,10 +33,14 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
     const [isOwner, setOwner] = useState(false);
     const [imageFile, setImageFile] = useState('');
     const [uploading, setUploading] = useState(false);
+    const [barVisible, setBarVisible] = useState(false);
+    const [snackBarText,setSnackText] = useState('');
     const openDelete = () => setDeleteVisible(true);
     const closeDelete = () => setDeleteVisible(false);
     const openOption = () => setOptionsVisible(true);
     const closeOption = () => setOptionsVisible(false);
+    const onDismissSnackBar = () => setBarVisible(false);
+
     
     if(!loaded){
         setDescription(anuncio.description);
@@ -59,7 +64,17 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
         return <AppLoading />;
     }
     
-
+    const refreshAd = async () =>{
+        await getAdvertisement(anuncio._id).then(
+            (res)=>{
+                setDescription(res.description);
+                setPrice(res.price);
+                setBookCondition(res.bookCondition);
+                setTitle(res.title);
+                setImageUrl(res.imageUrl);
+            }
+        )
+    }
     const handleDelete = async () => {
         await deleteAdvertisement(anuncio)
             .then(
@@ -84,7 +99,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     console.log(response);
                     setUpdate(false);
                     if(response.data.status === true){
-                        navigation.pop();
+                        refreshAd();
                     }
                 }
             )
@@ -96,30 +111,34 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
     }
     const upload = async (image) =>{
         if(image !== ''){
-            //faz chamada para importar image;
-            console.log(anuncio._id);
-            //console.log(image);
             let id = anuncio._id
-            await uploadImage(id, image);
+            await uploadImage(id, image).then(
+                ()=>refreshAd()
+            );            
         }
     }
     const addImage = async () => {
         if(!uploading){
             setUploading(true);
             try{
-                let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                if (permissionResult.granted === false) {
-                alert('Permission to access camera roll is required!');
-                return;
-                }
+                // let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                // if (permissionResult.granted === false) {
+                // alert('Permission to access camera roll is required!');
+                // return;
+                // }
             
-                let pickerResult = await ImagePicker.launchImageLibraryAsync({base64:true});
+                let pickerResult = await DocumentPicker.getDocumentAsync();
+                console.log(pickerResult);
                 if(pickerResult.cancelled === true){
                     return;
                 }else{
-                    let image = pickerResult.uri;
-                    
-                    await upload(image);
+                    let image = pickerResult;
+                    await upload(image).then(
+                        ()=>{
+                            setSnackText("Imagem atualizada com sucesso");
+                            setBarVisible(true);
+                        }
+                    );
                 }
                 
                 
@@ -159,6 +178,7 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     />
                 } 
                 {isOwner && (image === undefined || image === '') ? <Button onPress={()=>addImage()}>Adicionar imagem (max 5MB)</Button> : null}
+                {isOwner && (image !== undefined && image !== '' ) ? <Button onPress={()=>addImage()}>Atualizar imagem (max 5MB)</Button> : null}
             </View>
             <View style={styles.itemTag}>
                 <Text style={styles.tituloTag}>Título</Text>
@@ -271,6 +291,13 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
+            
+            <Snackbar visible={barVisible} 
+                      onDismiss={onDismissSnackBar} 
+                      action={{label:'OK',onPress:()=>onDismissSnackBar}}
+            >
+              <Text>{snackBarText}</Text>
+            </Snackbar>
 
         </View>
     )
