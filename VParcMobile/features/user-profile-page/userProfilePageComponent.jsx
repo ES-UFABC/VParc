@@ -6,12 +6,9 @@ import { View, Text, StyleSheet } from "react-native";
 import { getAdFromUser } from "../../services/advertisementService";
 import colors from "../../styles/colors";
 import AppLoading from 'expo-app-loading';
-import { deleteUser } from "../../services/userService";
+import { deleteUser, updateUser } from "../../services/userService";
 import { useFonts } from "@expo-google-fonts/nunito";
 import { 
-    Nunito_200ExtraLight,
-    Nunito_200ExtraLight_Italic,
-    Nunito_300Light,
     Nunito_400Regular,
     Nunito_700Bold,
     Nunito_800ExtraBold
@@ -66,7 +63,13 @@ const UserProfileComponent = ({navigation}) =>{
             )
     }
     const handleUpdate = async() =>{
-        console.log("Test");
+        let userUpdt = user;
+        userUpdt.cellphone = cellphone;
+        await updateUser(userUpdt).then(
+            (res)=>{
+                setUpdate(false);
+            }
+        )
     }
     if(!loadAds){
         loadAdsFromUser();
@@ -93,7 +96,7 @@ const UserProfileComponent = ({navigation}) =>{
                     <Text style={styleUser.userData}>RA: {user.ra}</Text>
                     {!update ? 
                         <Text style={styleUser.userData}>Celular: {user.cellphone}</Text> :
-                        <TextInput  style={styles.textInput} label="Celular" value={cellphone} onChangeText={(text)=>setCellphone(text)}></TextInput>
+                        <TextInput theme={{ colors: {text: colors.grayLight, primary: colors.grayMedium, secundary: colors.grayMedium} }}  label="Celular" value={cellphone} onChangeText={(text)=>setCellphone(text)}></TextInput>
                     }
                 </View>
             </View>
@@ -110,7 +113,7 @@ const UserProfileComponent = ({navigation}) =>{
             <View style={styleUser.oldAdSection}>
                 <List.Section title="">
                     <List.Accordion
-                        title="Seus anúncios"
+                        title="Meus anúncios"
                         titleStyle={{fontFamily:'Nunito_800ExtraBold'}}
                         expanded={expanded}
                         onPress={() => handlePress()}

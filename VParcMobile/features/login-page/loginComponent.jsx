@@ -19,8 +19,8 @@ import AppLoading from 'expo-app-loading';
 const LoginComponent = ({navigation}) =>{
     const { signIn } = useAuth();
     const [isLogin,setLogin] = useState(false);
-    const [email,setEmail] = useState('');
-    const [senha,setSenha] = useState('');
+    const [email,setEmail] = useState('gustavo.olival@aluno.ufabc.edu.br');
+    const [senha,setSenha] = useState('Gust@vo100');
     const [barVisible, setBarVisible] = useState(false);
     const [snackBarText,setSnackText] = useState('');
 
@@ -38,14 +38,17 @@ const LoginComponent = ({navigation}) =>{
     const handleLogin = async () =>{
       if(!isLogin){
         setLogin(true);
-        let response = await signIn(email, senha).then(
-          (res)=>{
-            console.log(res);
+        await signIn(email, senha).then(
+          (response)=>{
+            if(response.status !== true){
+              setLogin(false);
+              setSnackText(response.message);
+              setBarVisible(true);
+            }
           }
-        )
+        );
         
       }
-      
     }
 
     

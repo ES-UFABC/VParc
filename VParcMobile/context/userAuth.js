@@ -9,15 +9,12 @@ const AuthProvider = ({ children }) => {
 
   async function signIn(email, senha) {
     if(!signed){
-      await login(email, senha).then(
-        (response)=>{
-          if(response.status === true){
-            setSigned(true);
-            setUser(response.data.user);
-          }
-          return response;
-        }
-      ); 
+      let response = await login(email, senha)
+      if(response.status === true){
+        setSigned(true);
+        setUser(response.data.user);
+      }
+      return response;
     }
   }
   

@@ -16,7 +16,6 @@ const getAll = async () =>{
                 advertisements = error.response.data
             }
         )
-    
     return advertisements;
 }
 
@@ -67,7 +66,6 @@ const updateAdvertisement = async (advertisement)=>{
                 response = error.response.data;
             }
         )
-    console.log(response);
     return response;
 }
 
@@ -86,5 +84,27 @@ const getAdFromUser = async(id) => {
     )
     return adsFromUser;
 }
+const getAdvertisement = async(id) =>{
+    let response;
+    await axios.get(BASE_URL+'/advertisement/'+id).then(
+        (res) =>{
+            response=res;
+        }
+    ).catch(err => console.log(err));
+    return response.data.data.result[0];
+}
 
-export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser};
+const uploadImage = async(id, image)=>{
+    let response;
+    const imgBody = new FormData();
+    imgBody.append("image", image.file);
+    await axios.post(BASE_URL + '/advertisement/image?id='+id,imgBody,{
+    }).then(res=>{
+        response =res;
+    }).catch(err=>{
+        console.log(err.response);
+    });
+    return response;
+}
+
+export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage, getAdvertisement};
