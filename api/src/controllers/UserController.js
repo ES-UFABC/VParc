@@ -3,8 +3,10 @@ require("dotenv").config();
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
+const NotificationRepository = require("../repositories/NotificationRepository");
 const UserRepository = require("../repositories/UserRepository");
 const UserValidator = require("../validators/UserValidator");
+
 
 const SignedURLService = require("../services/SignedURLService");
 const SendEmailService = require("../services/SendEmailService");
@@ -178,6 +180,71 @@ class UserController {
             }
         });
 
+    }
+
+    // (POST) /createNotification
+    async createNotification(req, res){
+        const data = req.body;
+        const response = NotificationRepository.create(data);
+        if (response.status == false) {
+
+            res.status(404); // not found
+            res.json({
+                status: false,
+                message: "Erro ao criar notificação"
+            });
+            return;
+
+        }else{
+            res.status(201); // created
+            res.json({
+                status: true,
+                message: "Usuário foi notificado"
+            });
+        }
+    }
+
+    async getNotifications(req, res){
+        
+        const data = req.body;
+        const response = await NotificationRepository.findByUserId(data.id);
+        if (response.status == false) {
+
+            res.status(404); // not found
+            res.json({
+                status: false,
+                message: "Erro ao criar notificação"
+            });
+            return;
+
+        }else{
+            res.status(201); // created
+            res.json({
+                status: true,
+                data: response
+            });
+        }
+    }
+
+    async readNotification(req,res){
+        const data = req.body;
+        const response = await NotificationRepository.readNotification(data._id);
+        if (response.status == false) {
+
+            res.status(404); // not found
+            res.json({
+                status: false,
+                message: "Erro ao criar notificação"
+            });
+            return;
+
+        }else{
+            res.status(201); // created
+            res.json({
+                status: true,
+                message: "Notificação lida"
+            });
+        }
     }
 
     // (GET) /user/activate?userId= &hash
