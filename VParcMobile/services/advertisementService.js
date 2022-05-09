@@ -1,10 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000/api';
-
 const getAll = async () =>{
     let advertisements = [{}];
-    await axios.get(BASE_URL + '/advertisement')
+    await axios.get(process.env.BASE_URL + '/advertisement')
         .then(
             (response)=>{
                 advertisements = response.data.data.result;
@@ -21,7 +19,7 @@ const getAll = async () =>{
 
 const createAdvertisement = async (advertisement) =>{
     let response = [{}];
-    await axios.post(BASE_URL + '/advertisement', advertisement)
+    await axios.post(process.env.BASE_URL + '/advertisement', advertisement)
         .then(
             (responseApi)=>{
                 response = responseApi.data;
@@ -38,7 +36,7 @@ const createAdvertisement = async (advertisement) =>{
 const deleteAdvertisement = async (advertisement) =>{
     let response = {};
     let id = advertisement._id
-    await axios.delete(BASE_URL + '/advertisement/' + id)
+    await axios.delete(process.env.BASE_URL + '/advertisement/' + id)
         .then(
             (responseApi)=>{
                 response = responseApi;
@@ -55,7 +53,7 @@ const deleteAdvertisement = async (advertisement) =>{
 const updateAdvertisement = async (advertisement)=>{
     let response = {};
     let id = advertisement._id;
-    await axios.put(BASE_URL + '/advertisement/' + id, advertisement)
+    await axios.put(process.env.BASE_URL + '/advertisement/' + id, advertisement)
         .then(
             (responseApi)=>{
                 response=responseApi;
@@ -86,7 +84,7 @@ const getAdFromUser = async(id) => {
 }
 const getAdvertisement = async(id) =>{
     let response;
-    await axios.get(BASE_URL+'/advertisement/'+id).then(
+    await axios.get(process.env.BASE_URL+'/advertisement/'+id).then(
         (res) =>{
             response=res;
         }
@@ -98,7 +96,7 @@ const uploadImage = async(id, image)=>{
     let response;
     const imgBody = new FormData();
     imgBody.append("image", image.file);
-    await axios.post(BASE_URL + '/advertisement/image?id='+id,imgBody,{
+    await axios.post(process.env.BASE_URL + '/advertisement/image?id='+id,imgBody,{
     }).then(res=>{
         response =res;
     }).catch(err=>{
@@ -106,5 +104,7 @@ const uploadImage = async(id, image)=>{
     });
     return response;
 }
+
+
 
 export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage, getAdvertisement};
