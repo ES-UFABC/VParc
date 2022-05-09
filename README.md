@@ -72,3 +72,10 @@ Passo a passo:
 - Em seguida executar o projeto:
 
         npm start
+
+### Utilização
+
+Para realizar os testes na plataform, basta entrar no: https://es-ufabc.github.io/VParc/
+O login só é possível com um e-mail de aluno da UFABC.
+
+
