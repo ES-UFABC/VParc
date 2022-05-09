@@ -7,5 +7,10 @@ module.exports = function(api) {
         plugins: ['react-native-paper/babel'],
       },
     },
+    plugins: [
+      ["inline-dotenv",{
+        unsafe: true
+      }]
+    ],
   };
 };

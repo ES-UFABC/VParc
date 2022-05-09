@@ -1,9 +1,8 @@
 import axios from "axios";
-const BASE_URL = 'http://localhost:3000/api';
 
 const getAllCategories = async () => {
     let categories = [{}];
-    await axios.get(BASE_URL + '/category')
+    await axios.get(process.env.BASE_URL + '/category')
         .then(
             (response) => {
                 categories = response.data;
