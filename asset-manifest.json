@@ -1,0 +1,41 @@
+{
+  "files": {
+    "app.js": "/VParc/static/js/app.ff595f72.chunk.js",
+    "app.js.map": "/VParc/static/js/app.ff595f72.chunk.js.map",
+    "runtime~app.js": "/VParc/static/js/runtime~app.24a98f65.js",
+    "runtime~app.js.map": "/VParc/static/js/runtime~app.24a98f65.js.map",
+    "static/js/2.13fc35da.chunk.js": "/VParc/static/js/2.13fc35da.chunk.js",
+    "static/js/2.13fc35da.chunk.js.map": "/VParc/static/js/2.13fc35da.chunk.js.map",
+    "fonts/MaterialCommunityIcons.ttf": "/VParc/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/Nunito_200ExtraLight.ttf": "/VParc/./fonts/Nunito_200ExtraLight.ttf",
+    "fonts/Nunito_200ExtraLight_Italic.ttf": "/VParc/./fonts/Nunito_200ExtraLight_Italic.ttf",
+    "fonts/Nunito_300Light.ttf": "/VParc/./fonts/Nunito_300Light.ttf",
+    "fonts/Nunito_300Light_Italic.ttf": "/VParc/./fonts/Nunito_300Light_Italic.ttf",
+    "fonts/Nunito_400Regular.ttf": "/VParc/./fonts/Nunito_400Regular.ttf",
+    "fonts/Nunito_400Regular_Italic.ttf": "/VParc/./fonts/Nunito_400Regular_Italic.ttf",
+    "fonts/Nunito_500Medium.ttf": "/VParc/./fonts/Nunito_500Medium.ttf",
+    "fonts/Nunito_500Medium_Italic.ttf": "/VParc/./fonts/Nunito_500Medium_Italic.ttf",
+    "fonts/Nunito_600SemiBold.ttf": "/VParc/./fonts/Nunito_600SemiBold.ttf",
+    "fonts/Nunito_600SemiBold_Italic.ttf": "/VParc/./fonts/Nunito_600SemiBold_Italic.ttf",
+    "fonts/Nunito_700Bold.ttf": "/VParc/./fonts/Nunito_700Bold.ttf",
+    "fonts/Nunito_700Bold_Italic.ttf": "/VParc/./fonts/Nunito_700Bold_Italic.ttf",
+    "fonts/Nunito_800ExtraBold.ttf": "/VParc/./fonts/Nunito_800ExtraBold.ttf",
+    "fonts/Nunito_800ExtraBold_Italic.ttf": "/VParc/./fonts/Nunito_800ExtraBold_Italic.ttf",
+    "fonts/Nunito_900Black.ttf": "/VParc/./fonts/Nunito_900Black.ttf",
+    "fonts/Nunito_900Black_Italic.ttf": "/VParc/./fonts/Nunito_900Black_Italic.ttf",
+    "favicon-16.png": "/VParc/favicon-16.png",
+    "favicon-32.png": "/VParc/favicon-32.png",
+    "favicon.ico": "/VParc/favicon.ico",
+    "index.html": "/VParc/index.html",
+    "manifest.json": "/VParc/manifest.json",
+    "serve.json": "/VParc/serve.json",
+    "static/js/2.13fc35da.chunk.js.LICENSE.txt": "/VParc/static/js/2.13fc35da.chunk.js.LICENSE.txt",
+    "static/media/logoBranco.png": "/VParc/static/media/logoBranco.f32297c5.png",
+    "static/media/logoMaior.png": "/VParc/static/media/logoMaior.20242980.png"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.24a98f65.js",
+    "static/js/2.13fc35da.chunk.js",
+    "static/js/app.ff595f72.chunk.js"
+  ]
+}
