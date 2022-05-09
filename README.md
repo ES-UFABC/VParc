@@ -76,6 +76,35 @@ Passo a passo:
 ### Utilização
 
 Para realizar os testes na plataform, basta entrar no: https://es-ufabc.github.io/VParc/
-O login só é possível com um e-mail de aluno da UFABC.
 
+## Imagens
+
+### LandPage
+![image info](./images/land-page.png)
+
+### Página de cadastro
+![image info](./images/user-registration.png)
+
+Página de cadastro de novo usuário, sendo possível cadastrar com um e-mail de aluno da UFABC.
+
+### HomePage
+![image info](./images/home-page.png)
+
+Página após logar, com opções de verificar os produtos que estão à venda ou para doação
+
+### Página de perfil
+![image info](./images/profile-page.png)
+
+Página que contém informações do usuário, bem como as notificações de outros usuários interessados nos produtos e a lista de produtos que ele está ofertando.
+
+
+### Página de anúncio
+![image info](./images/ad-page.png)
+
+Página de um anúncio criado por outro usuário, contendo imagem, e descrição do produto, além disso, o botão de "Tenho interesse" para criar uma nova notificação ao dono do anúncio
+
+### Página de criação de anúncio
+![image info](./images/create-ad.png)
+
+Página de criação de anúncio, podendo escolher se é a venda, ou se é doação
 
