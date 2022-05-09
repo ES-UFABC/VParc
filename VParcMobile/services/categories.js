@@ -1,6 +1,11 @@
 import axios from "axios";
 
+const log = () =>{
+    console.log(process.env.BASE_URL);
+}
+
 const getAllCategories = async () => {
+    log();
     let categories = [{}];
     await axios.get(process.env.BASE_URL + '/category')
         .then(

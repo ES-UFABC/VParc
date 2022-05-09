@@ -1,6 +1,11 @@
 import axios from "axios";
 
+const log = () =>{
+    console.log(process.env.BASE_URL);
+}
+
 const getAll = async () =>{
+    log();
     let advertisements = [{}];
     await axios.get(process.env.BASE_URL + '/advertisement')
         .then(
@@ -18,6 +23,7 @@ const getAll = async () =>{
 }
 
 const createAdvertisement = async (advertisement) =>{
+    log();
     let response = [{}];
     await axios.post(process.env.BASE_URL + '/advertisement', advertisement)
         .then(
@@ -34,6 +40,7 @@ const createAdvertisement = async (advertisement) =>{
 }
 
 const deleteAdvertisement = async (advertisement) =>{
+    log();
     let response = {};
     let id = advertisement._id
     await axios.delete(process.env.BASE_URL + '/advertisement/' + id)
@@ -51,6 +58,7 @@ const deleteAdvertisement = async (advertisement) =>{
 }
 
 const updateAdvertisement = async (advertisement)=>{
+    log();
     let response = {};
     let id = advertisement._id;
     await axios.put(process.env.BASE_URL + '/advertisement/' + id, advertisement)
@@ -68,6 +76,7 @@ const updateAdvertisement = async (advertisement)=>{
 }
 
 const getAdFromUser = async(id) => {
+    log();
     let adsFromUser = [];
     await getAll().then(
         (advertisements)=>{
@@ -83,6 +92,7 @@ const getAdFromUser = async(id) => {
     return adsFromUser;
 }
 const getAdvertisement = async(id) =>{
+    log();
     let response;
     await axios.get(process.env.BASE_URL+'/advertisement/'+id).then(
         (res) =>{
@@ -93,6 +103,7 @@ const getAdvertisement = async(id) =>{
 }
 
 const uploadImage = async(id, image)=>{
+    log();
     let response;
     const imgBody = new FormData();
     imgBody.append("image", image.file);

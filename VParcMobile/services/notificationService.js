@@ -1,6 +1,11 @@
 import axios from "axios";
 
+const log = () =>{
+    console.log(process.env.BASE_URL);
+}
+
 const notifyInterest = async(notification)=>{
+    log();
     let response ={};
     await axios.post(process.env.BASE_URL + '/user/createNotification', notification)
         .then(res =>{
@@ -13,6 +18,7 @@ const notifyInterest = async(notification)=>{
 }
 
 const getNotifications = async(user)=>{
+    log();
     let response = {};
     await axios.post(process.env.BASE_URL + '/user/getNotifications', user)
         .then((res)=>{
@@ -26,6 +32,7 @@ const getNotifications = async(user)=>{
 }
 
 const readNotification = async(notification)=>{
+    log();
     let response = {};
     await axios.post(process.env.BASE_URL + '/user/readNotification', notification)
         .then((res)=>{
