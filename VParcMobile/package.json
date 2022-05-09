@@ -2,12 +2,15 @@
   "name": "vparcmobile",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "homepage":"http://GuOlival.github.io/VParc",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "deploy": "gh-pages -d web-build",
+    "predeploy": "expo build:web"
   },
   "dependencies": {
     "@expo-google-fonts/nunito": "^0.2.2",
@@ -37,7 +40,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4"
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "gh-pages": "^3.2.3"
   },
   "assets": [
     "fonts"
