@@ -3,6 +3,7 @@ import axios from 'axios';
 const login = async (email, senha)  => {
     let response;
     let loginObj = {email:email, password:senha};
+    console.log(process.env.BASE_URL);
     await axios.post(process.env.BASE_URL + '/login', loginObj)
     .then(responseAPI => {
         response = responseAPI.data;
