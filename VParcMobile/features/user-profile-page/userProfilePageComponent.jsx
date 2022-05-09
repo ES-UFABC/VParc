@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/userAuth";
 import styles from "../../styles/styleAdvertisementPage";
-import { Appbar, List, ActivityIndicator, Button, Menu, TextInput, Portal, Dialog, Paragraph } from "react-native-paper";
+import { Appbar, List, ActivityIndicator, Button, Menu, TextInput, Portal, Dialog, Paragraph, Badge } from "react-native-paper";
 import { View, Text, StyleSheet } from "react-native";
 import { getAdFromUser } from "../../services/advertisementService";
 import colors from "../../styles/colors";
@@ -13,18 +13,23 @@ import {
     Nunito_700Bold,
     Nunito_800ExtraBold
   } from '@expo-google-fonts/nunito';
+import { getNotifications, readNotification } from "../../services/notificationService.js";
+import { copyFileSync, read } from "fs";
 
 
 const UserProfileComponent = ({navigation}) =>{
     const {user} = useAuth();
     const [expanded, setExpanded] = useState(false);
+    const [expandedNotifications, setExpandedNotifications] = useState(false);
     const [loadAds, setLoadAds] = useState(false);
+    const [isLoadedNotifications, setLoadNotifications] = useState(false);
     const [advertisementList, setAdvertisementList] = useState([]);
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [deleteVisible, setDeleteVisible] = useState(false);
     const [cellphone, setCellphone] = useState(user.cellphone);
     const [update,setUpdate] = useState(false);
-
+    const [notifications, setNotifications] = useState([]);
+    const [unreadNotifications, setUnreadNotifications] = useState(0);
     const openDelete = () => setDeleteVisible(true);
     const closeDelete = () => setDeleteVisible(false);
     const openOption = () => setOptionsVisible(true);
@@ -32,7 +37,9 @@ const UserProfileComponent = ({navigation}) =>{
     const handlePress = async () => {
         setExpanded(!expanded);
     };
-
+    const handlePressNotification = async () => {
+        setExpandedNotifications(!expandedNotifications);
+    };
     let [fontsLoaded] = useFonts({
         Nunito_400Regular,
         Nunito_700Bold,
@@ -51,6 +58,29 @@ const UserProfileComponent = ({navigation}) =>{
             }
         )
     }
+
+    const loadNotifications = async () => {
+        await getNotifications(user).then((res)=>{
+                setNotifications(res);
+                getUnreadNotificationsCount(res);
+                setLoadNotifications(true);
+                
+            }
+        )
+    }
+
+    const getUnreadNotificationsCount = (res) =>{
+        let unreadCount = 0;
+        if(res.length > 0){
+            res.map(notf=>{
+                if(notf.read === false){
+                    unreadCount++;
+                }
+            })
+        }
+        setUnreadNotifications(unreadCount);
+    }
+
     const handleDelete = async () => {
         await deleteUser(user)
             .then(
@@ -71,12 +101,26 @@ const UserProfileComponent = ({navigation}) =>{
             }
         )
     }
+
     if(!loadAds){
         loadAdsFromUser();
+        loadNotifications();
     }
+
+    const confirmNotify = async(notification) => {
+        await readNotification(notification).then(
+            (res)=>{
+                loadNotifications();
+            }
+        )
+    }
+    
+
     const showAdPage = (ad) =>{
         navigation.push('AdvertisementPage', ad);
     }
+    
+
     return(
         <View>
             <Appbar.Header style={styles.appBar}>
@@ -109,8 +153,9 @@ const UserProfileComponent = ({navigation}) =>{
             ):
                 null
             } 
-
             <View style={styleUser.oldAdSection}>
+            {advertisementList.length > 0 ?
+            
                 <List.Section title="">
                     <List.Accordion
                         title="Meus anúncios"
@@ -138,7 +183,55 @@ const UserProfileComponent = ({navigation}) =>{
                             )
                         }
                     </List.Accordion>
-                </List.Section>
+                </List.Section> : null
+            }
+                {notifications.length > 0 ? 
+                    <List.Section title="">
+                        <List.Accordion
+                            title="Minhas notificações"
+                            left={props =><Badge size={25}>{unreadNotifications}</Badge>}
+                            titleStyle={{fontFamily:'Nunito_800ExtraBold'}}
+                            expanded={expandedNotifications}
+                            onPress={() => handlePressNotification()}
+                            style={{backgroundColor:colors.primary}}
+                        >
+                            {!isLoadedNotifications ? 
+                                <ActivityIndicator style={{margin:'20px'}}/>:
+                                notifications.map(
+                                    (nots, index)=>{
+                                        if(!nots.read){
+
+                                            return(
+                                                <List.Item 
+                                                    key={index} 
+                                                    style={{backgroundColor:colors.secundary}} 
+                                                    title={nots.nameInterested  + ' - ' + nots.numberInterested} 
+                                                    titleStyle={{fontFamily:'Nunito_800ExtraBold'}} 
+                                                    descriptionStyle={{fontFamily:'Nunito_800ExtraBold'}} 
+                                                    description={nots.advertisementTitle + " - Pressione para confirmar leitura"}
+                                                    onPress={()=>confirmNotify(nots)}
+                                                />
+                                            )
+                                        }else{
+                                            return(
+                                                <List.Item 
+                                                    key={index} 
+                                                    style={{backgroundColor:colors.grayMedium}} 
+                                                    title={nots.nameInterested  + ' - ' + nots.numberInterested} 
+                                                    titleStyle={{fontFamily:'Nunito_800ExtraBold'}} 
+                                                    descriptionStyle={{fontFamily:'Nunito_800ExtraBold'}} 
+                                                    description={nots.advertisementTitle}
+                                                    //onPress={()=>confirmNotify(nots)}
+                                                />
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        </List.Accordion>
+                    </List.Section> : null
+                }
+                
             </View>
             <Portal>
                 <Dialog visible={deleteVisible} onDismiss={() => closeDelete()}>

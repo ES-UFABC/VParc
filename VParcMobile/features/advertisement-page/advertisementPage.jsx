@@ -10,7 +10,10 @@ import {
     Nunito_700Bold,
   } from '@expo-google-fonts/nunito'
 import { useFonts } from "@expo-google-fonts/nunito";
-import { deleteAdvertisement, updateAdvertisement, uploadImage, getAdvertisement } from "../../services/advertisementService";
+import { deleteAdvertisement, updateAdvertisement, uploadImage, getAdvertisement} from "../../services/advertisementService";
+//import { notifyInterest, getNotifications } from "../../services/notificationServices";
+import { notifyInterest, getNotifications } from "../../services/notificationService.js";
+
 import styles from "../../styles/styleAdvertisementPage";
 import AppLoading from 'expo-app-loading';
 import { useAuth } from "../../context/userAuth";
@@ -146,7 +149,22 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
             }
             setUploading(false);
         }
-        
+    }
+
+    const sendNotifyInterest = async ()=>{
+        const newNotification = {
+            advertisementId: anuncio._id, 
+            advertisementTitle: anuncio.title,
+            interestedId: user.id, 
+            nameInterested:user.first_name,
+            numberInterested:user.cellphone,
+            ownerAdId: anuncio.userId, 
+            dateNotified: Date.now(),
+            read:false
+        }
+        await notifyInterest(newNotification).then(
+            (res)=>console.log(res)
+        )
     }
     
 
@@ -266,7 +284,13 @@ const AdvertisementPageComponent = ({route, navigation}) =>{
                 (<Text style={styles.bookConditionTag}>{anuncio.bookCondition}</Text>)
                 }
             </View>
-
+            {!isOwner ?
+                <View>
+                    <Button style={styles.buttonUpdate} labelStyle={styles.textButtonUpdate} onPress={()=>sendNotifyInterest()} mode="contained">TENHO INTERESSE</Button>
+                </View>
+                :
+                null
+            }
             {update ? 
             (
                 <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', marginTop:'5%'}}>

@@ -107,4 +107,6 @@ const uploadImage = async(id, image)=>{
     return response;
 }
 
+
+
 export {getAll, deleteAdvertisement, updateAdvertisement, createAdvertisement, getAdFromUser, uploadImage, getAdvertisement};
