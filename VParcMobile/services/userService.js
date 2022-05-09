@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const log = () =>{
+    console.log(process.env.BASE_URL);
+}
 const login = async (email, senha)  => {
     let response;
     let loginObj = {email:email, password:senha};
@@ -17,7 +20,7 @@ const login = async (email, senha)  => {
 
 const register =  async (user) =>{
     let response;
-    
+    log();
     await axios.post(process.env.BASE_URL + '/user',user)
                 .then((responseAPI) => response = responseAPI.data)
                 .catch((error) => response =  error.response.data);
@@ -26,13 +29,14 @@ const register =  async (user) =>{
 
 const deleteUser = async(user) =>{
     let response;
-
+    log();
     await axios.delete(process.env.BASE_URL + '/user',user)
                 .then((responseAPI) => response = responseAPI.data)
                 .catch((error) => response = error.response.data);
 }
 
 const updateUser = async(user) =>{
+    log();
     let response;
     await axios.put(process.env.BASE_URL + '/user/' + user._id, user)
                 .then((res)=>{
